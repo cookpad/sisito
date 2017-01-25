@@ -1,0 +1,2 @@
+module WhitelistMailsHelper
+end

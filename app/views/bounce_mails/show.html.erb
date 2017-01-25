@@ -1,0 +1,36 @@
+<div class="page-header">
+  <strong><%= @bounce_mail.recipient %></strong>
+</div>
+
+<section>
+  <div class="col-md-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="tight">Timestamp</th>
+          <th class="x-tight">Reason</th>
+          <th>Diagnosticcode</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @history.each do |bounce_mail| %>
+          <tr>
+            <td><%= bounce_mail.timestamp %></td>
+            <td><%= bounce_mail.reason %></td>
+            <td><%= bounce_mail.diagnosticcode %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="col-md-12">
+    <%= link_to bounce_mails_path do %>
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      Back
+    <% end %>
+  </div>
+</section>

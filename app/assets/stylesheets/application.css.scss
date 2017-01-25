@@ -13,3 +13,15 @@
  *= require_tree .
  *= require_self
  */
+
+.x-tight {
+  width: 100px;
+}
+
+.tight {
+  width: 200px;
+}
+
+.field_with_errors {
+  background-color: transparent;
+}
