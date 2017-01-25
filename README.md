@@ -1,24 +1,48 @@
-# README
+Sisito
+================
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
+provided by the [RailsApps Project](http://railsapps.github.io/).
 
-Things you may want to cover:
+Rails Composer is supported by developers who purchase our RailsApps tutorials.
 
-* Ruby version
+Problems? Issues?
+-----------
 
-* System dependencies
+Need help? Ask on Stack Overflow with the tag 'railsapps.'
 
-* Configuration
+Your application contains diagnostics in the README file. Please provide a copy of the README file when reporting any issues.
 
-* Database creation
+If the application doesn't work as expected, please [report an issue](https://github.com/RailsApps/rails_apps_composer/issues)
+and include the diagnostics.
 
-* Database initialization
+Ruby on Rails
+-------------
 
-* How to run the test suite
+This application requires:
 
-* Services (job queues, cache servers, search engines, etc.)
+- Ruby 2.3.3
+- Rails 5.0.1
 
-* Deployment instructions
+Learn more about [Installing Rails](http://railsapps.github.io/installing-rails.html).
 
-* ...
+Getting Started
+---------------
+
+Documentation and Support
+-------------------------
+
+Issues
+-------------
+
+Similar Projects
+----------------
+
+Contributing
+------------
+
+Credits
+-------
+
+License
+-------
