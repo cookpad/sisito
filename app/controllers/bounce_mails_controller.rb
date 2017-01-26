@@ -30,6 +30,8 @@ class BounceMailsController < ApplicationController
       {recipient: recipients, digest: digests}.each do |k, v|
         if v.present?
           @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient)
+                                     .joins('LEFT JOIN whitelist_mails ON bounce_mails.recipient = whitelist_mails.recipient')
+                                     .where('whitelist_mails.recipient IS NULL')
                                      .where(k => v).group(:recipient)
         end
       end
