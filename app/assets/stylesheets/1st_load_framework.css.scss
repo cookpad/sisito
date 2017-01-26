@@ -16,14 +16,14 @@ img {
 // create your own classes
 // to make views framework-neutral
 .column {
-  @extend .col-md-6;
+  @extend .col-sm-6;
   @extend .text-center;
   }
 .form {
-  @extend .col-md-6;
+  @extend .col-sm-6;
   }
 .form-centered {
-  @extend .col-md-6;
+  @extend .col-sm-6;
   @extend .text-center;
   }
 .submit {
