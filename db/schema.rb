@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170125094947) do
 
-  create_table "bounce_mails", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "bounce_mails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "timestamp",                   null: false
     t.string   "lhost",                       null: false
     t.string   "rhost",                       null: false
