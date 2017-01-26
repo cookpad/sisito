@@ -1,0 +1,51 @@
+<section>
+  <div class="col-md-12">
+    <%= form_tag bounce_mails_path do %>
+      <div class="form-group">
+        <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3, placeholder: 'foo@example.com bar@example.com 767e74eab7081c41e0b83630511139d130249666' %>
+      </div>
+      <%= submit_tag 'Search', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</section>
+
+<section>
+  <div class="col-md-12">
+    <% if @bounce_mails.present? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="tight">Timestamp</th>
+            <th>Recipient</th>
+            <th class="x-tight"></th>
+            <th class="x-tight"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @bounce_mails.each do |bounce_mail| %>
+            <tr>
+              <td><%= bounce_mail.timestamp %></td>
+              <td><%= bounce_mail.recipient %></td>
+              <td>
+                <%= link_to bounce_mail do %>
+                  <span class="glyphicon glyphicon-search"></span>
+                  Show
+                <% end %>
+              </td>
+              <td>
+                <%= link_to whitelist_mails_register_path('whitelist_mail[recipient]': bounce_mail.recipient), method: :post, data: { confirm: 'Are you sure?' } do %>
+                  <span class="glyphicon glyphicon-ok"></span>
+                  Whitelist
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif @query.present? %>
+      <span class="glyphicon glyphicon-flash"></span>
+      No results found for <strong><%= @query %></strong>
+    <% end %>
+  </div>
+</section>
