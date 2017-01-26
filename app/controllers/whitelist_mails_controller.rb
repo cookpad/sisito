@@ -1,5 +1,5 @@
 class WhitelistMailsController < ApplicationController
-  before_action :set_whitelist_mail, only: [:show, :destroy]
+  before_action :set_whitelist_mail, only: [:destroy]
 
   def index
     @whitelist_mails = WhitelistMail.all
@@ -35,13 +35,12 @@ class WhitelistMailsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_whitelist_mail
-      @whitelist_mail = WhitelistMail.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def whitelist_mail_params
-      params.require(:whitelist_mail).permit(:recipient)
-    end
+  def set_whitelist_mail
+    @whitelist_mail = WhitelistMail.find(params[:id])
+  end
+
+  def whitelist_mail_params
+    params.require(:whitelist_mail).permit(:recipient)
+  end
 end

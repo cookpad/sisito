@@ -1,18 +1,42 @@
+<%= javascript_include_tag 'https://d3js.org/d3.v3.min.js' %>
+
 <section>
-  <div class="col-md-12">
-    <div id="chart"></div>
+  <div class="col-md-8">
+    <div id="count_by_date"></div>
+  </div>
+  <div class="col-md-4">
+    <div id="count_by_destination"></div>
   </div>
 </section>
 
-<%= javascript_include_tag 'https://d3js.org/d3.v3.min.js' %>
+<%= javascript_tag do %>
+  c3.generate({
+    bindto: '#count_by_date',
+    size: {height: 200},
+    data: {
+      x: 'x',
+      columns: [
+        ['x', <%= raw @count_by_date.keys.map {|i| i.strftime('%Y-%m-%d') }.map(&:inspect).join(?,) %>],
+        ['count', <%= @count_by_date.values.join(?,) %>]
+      ],
+      type: 'bar'
+    },
+    axis: {
+      x: {
+        type: 'timeseries',
+        tick: {format: '%Y-%m-%d'}
+      }
+    }
+  });
+<% end %>
 
 <%= javascript_tag do %>
-  var chart = c3.generate({
+  c3.generate({
+    bindto: '#count_by_destination',
+    size: {height: 200},
     data: {
-      columns: [
-        ['data1', 30, 200, 100, 400, 150, 250],
-        ['data2', 50, 20, 10, 40, 15, 25]
-      ]
+      columns: <%= raw @count_by_destination.to_a.inspect %>,
+      type : 'pie'
     }
   });
 <% end %>

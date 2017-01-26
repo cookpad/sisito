@@ -29,5 +29,6 @@ group :development do
   gem 'better_errors'
   gem 'hub', :require=>nil
   gem 'rails_layout'
+  gem 'pry-rails'
 end
 gem 'c3-rails'
