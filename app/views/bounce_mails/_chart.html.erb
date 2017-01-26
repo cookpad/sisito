@@ -1,11 +1,14 @@
 <%= javascript_include_tag 'https://d3js.org/d3.v3.min.js' %>
 
 <section>
-  <div class="col-md-8">
+  <div class="col-md-6">
     <div id="count_by_date"></div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div id="count_by_destination"></div>
+  </div>
+  <div class="col-md-3">
+    <div id="count_by_reason"></div>
   </div>
 </section>
 
@@ -36,6 +39,17 @@
     size: {height: 200},
     data: {
       columns: <%= raw @count_by_destination.to_a.inspect %>,
+      type : 'pie'
+    }
+  });
+<% end %>
+
+<%= javascript_tag do %>
+  c3.generate({
+    bindto: '#count_by_reason',
+    size: {height: 200},
+    data: {
+      columns: <%= raw @count_by_reason.to_a.inspect %>,
       type : 'pie'
     }
   });

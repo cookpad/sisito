@@ -4,13 +4,16 @@ class BounceMailsController < ApplicationController
   def index
     @query = params[:query] || cookies[:query]
 
-    @count_by_date = BounceMail.where('timestamp >= NOW() - INTERVAL 30 DAY')
+    @count_by_date = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
                                .group(:date)
                                .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
                                .sort_by(&:first).to_h
 
-    @count_by_destination = BounceMail.where('timestamp >= NOW() - INTERVAL 30 DAY')
+    @count_by_destination = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
                                       .group(:destination).count
+
+    @count_by_reason = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
+                                      .group(:reason).count
 
     if @query.present?
       cookies[:query] = @query
