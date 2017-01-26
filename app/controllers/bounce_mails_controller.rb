@@ -2,12 +2,12 @@ class BounceMailsController < ApplicationController
   before_action :set_bounce_mail, only: [:show]
 
   def index
-    if params[:commit] == 'Clear'
+    @query = params[:query] || cookies[:query]
+
+    if (params[:commit] == 'Search' and @query.blank?) or params[:commit] == 'Clear'
       cookies[:query] = ''
       redirect_to bounce_mails_path
     else
-      @query = params[:query] || cookies[:query]
-
       @count_by_date = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
                                  .group(:date)
                                  .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
