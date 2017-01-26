@@ -20,10 +20,11 @@
       x: 'x',
       columns: [
         ['x', <%= raw @count_by_date.keys.map {|i| i.strftime('%Y-%m-%d') }.map(&:inspect).join(?,) %>],
-        ['count', <%= @count_by_date.values.join(?,) %>]
+        ['bounce mail count', <%= @count_by_date.values.join(?,) %>]
       ],
       type: 'bar'
     },
+    legend: {show: false},
     axis: {
       x: {
         type: 'timeseries',

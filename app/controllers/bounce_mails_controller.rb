@@ -2,41 +2,46 @@ class BounceMailsController < ApplicationController
   before_action :set_bounce_mail, only: [:show]
 
   def index
-    @query = params[:query] || cookies[:query]
+    if params[:commit] == 'Clear'
+      cookies[:query] = ''
+      redirect_to bounce_mails_path
+    else
+      @query = params[:query] || cookies[:query]
 
-    @count_by_date = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
-                               .group(:date)
-                               .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
-                               .sort_by(&:first).to_h
+      @count_by_date = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
+                                 .group(:date)
+                                 .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
+                                 .sort_by(&:first).to_h
 
-    @count_by_destination = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
-                                      .group(:destination).count
+      @count_by_destination = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
+                                        .group(:destination).count
 
-    @count_by_reason = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
-                                      .group(:reason).count
+      @count_by_reason = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
+                                        .group(:reason).count
 
-    if @query.present?
-      cookies[:query] = @query
-      recipients = []
-      digests = []
+      if @query.present?
+        cookies[:query] = @query
+        recipients = []
+        digests = []
 
-      @query.split(/\s+/).each do |phrase|
-        if phrase =~ /@/
-          recipients << phrase
-        else
-          digests << phrase
+        @query.split(/\s+/).each do |phrase|
+          if phrase =~ /@/
+            recipients << phrase
+          else
+            digests << phrase
+          end
         end
-      end
 
-      @bounce_mails = []
+        @bounce_mails = []
 
-      {recipient: recipients, digest: digests}.each do |k, v|
-        if v.present?
-          @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient)
-                                     .joins('LEFT JOIN whitelist_mails ON bounce_mails.recipient = whitelist_mails.recipient')
-                                     .where('whitelist_mails.recipient IS NULL')
-                                     .where(k => v).group(:recipient)
-        end
+        {recipient: recipients, digest: digests}.each {|k, v|
+          if v.present?
+            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient)
+                                       .joins('LEFT JOIN whitelist_mails ON bounce_mails.recipient = whitelist_mails.recipient')
+                                       .where('whitelist_mails.recipient IS NULL')
+                                       .where(k => v).group(:recipient)
+          end
+        }
       end
     end
   end

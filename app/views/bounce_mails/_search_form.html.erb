@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <%= form_tag bounce_mails_path do %>
       <div class="form-group">
-        <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3, placeholder: 'foo@example.com bar@example.com 767e74eab7081c41e0b83630511139d130249666' %>
+        <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3,placeholder: 'email (e.g. foo@example.com)  or  hash (e.g. 767e74eab7081c41e0b83630511139d130249666)' %>
       </div>
       <%= submit_tag 'Search', class: 'btn btn-primary' %>
       <%= submit_tag :input, value: 'Clear', onclick: "$('#query').text('');", class: 'btn btn-default' %>
