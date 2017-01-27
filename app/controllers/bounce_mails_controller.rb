@@ -13,8 +13,8 @@ class BounceMailsController < ApplicationController
                                  .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
                                  .sort_by(&:first).to_h
 
-      @count_by_destination = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
-                                        .group(:destination).count
+      @count_by_senderdomain = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
+                                        .group(:senderdomain).count
 
       @count_by_reason = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
                                         .group(:reason).count
@@ -36,8 +36,10 @@ class BounceMailsController < ApplicationController
 
         {recipient: recipients, digest: digests}.each {|k, v|
           if v.present?
-            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient)
-                                       .joins('LEFT JOIN whitelist_mails ON bounce_mails.recipient = whitelist_mails.recipient')
+            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain)
+                                       .joins('LEFT JOIN whitelist_mails' +
+                                              '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                              ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                                        .where('whitelist_mails.recipient IS NULL')
                                        .where(k => v).group(:recipient)
           end
@@ -47,7 +49,7 @@ class BounceMailsController < ApplicationController
   end
 
   def show
-    @history = BounceMail.where(recipient: @bounce_mail.recipient)
+    @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
                          .order(timestamp: :desc)
   end
 

@@ -41,6 +41,6 @@ class WhitelistMailsController < ApplicationController
   end
 
   def whitelist_mail_params
-    params.require(:whitelist_mail).permit(:recipient)
+    params.require(:whitelist_mail).permit(:recipient, :senderdomain)
   end
 end

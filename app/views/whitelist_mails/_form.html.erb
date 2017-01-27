@@ -1,15 +1,22 @@
 <section>
   <div class="col-sm-12">
     <% if whitelist_mail.errors.any? %>
-      <% whitelist_mail.errors.full_messages.each do |message| %>
-        <div class="alert alert-danger"><%= message %></div>
-      <% end %>
+      <div class="alert alert-danger">
+        <% whitelist_mail.errors.full_messages.each do |message| %>
+          <%= message %><br/>
+        <% end %>
+      </div>
     <% end %>
 
     <%= form_for(whitelist_mail) do |f| %>
       <div class="form-group">
         <%= f.label :recipient, class: 'control-label' %>
         <%= f.text_field :recipient, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :senderdomain, class: 'control-label' %>
+        <%= f.text_field :senderdomain, class: 'form-control' %>
       </div>
 
       <%= f.submit class: 'btn btn-primary' %>
