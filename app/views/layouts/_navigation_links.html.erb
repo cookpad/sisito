@@ -1,13 +1,21 @@
 <%# add navigation links to this file %>
 <li>
   <%= link_to bounce_mails_path do %>
-     <span class="glyphicon glyphicon-envelope"></span>
+    <span class="glyphicon glyphicon-envelope"></span>
     Bounce Mails
   <% end %>
 </li>
 <li>
   <%= link_to whitelist_mails_path do %>
-     <span class="glyphicon glyphicon-list-alt"></span>
+    <span class="glyphicon glyphicon-list-alt"></span>
     Whitelist Mails
   <% end %>
 </li>
+<% ENV.fetch('SISITO_HEADER_LINKS', '').split(?,).map {|i| i.split(?:, 2) }.each do |label, url| %>
+  <li>
+    <%= link_to url, target: '_blank' do %>
+      <span class="glyphicon glyphicon-share"></span>
+      <%= label %>
+    <% end %>
+  </li>
+<% end %>
