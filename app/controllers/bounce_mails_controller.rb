@@ -13,8 +13,8 @@ class BounceMailsController < ApplicationController
                                  .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
                                  .sort_by(&:first).to_h
 
-      @count_by_senderdomain = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
-                                        .group(:senderdomain).count
+      @count_by_destination = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
+                                        .group(:destination).count
 
       @count_by_reason = BounceMail.where('timestamp >= NOW() - INTERVAL 7 DAY')
                                         .group(:reason).count

@@ -41,6 +41,14 @@ GEM
     arel (7.1.4)
     autoprefixer-rails (6.7.0)
       execjs
+    aws-sdk (2.7.3)
+      aws-sdk-resources (= 2.7.3)
+    aws-sdk-core (2.7.3)
+      aws-sigv4 (~> 1.0)
+      jmespath (~> 1.0)
+    aws-sdk-resources (2.7.3)
+      aws-sdk-core (= 2.7.3)
+    aws-sigv4 (1.0.0)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -72,6 +80,7 @@ GEM
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
+    jmespath (1.3.1)
     jquery-rails (4.2.2)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -132,6 +141,8 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    rcredstash (0.6.0)
+      aws-sdk (>= 2)
     sass (3.4.23)
     sass-rails (5.0.6)
       railties (>= 4.0.0, < 6)
@@ -139,6 +150,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    secret_env (0.4.0)
     slop (3.6.0)
     spring (2.0.1)
       activesupport (>= 4.2)
@@ -190,7 +202,9 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (~> 5.0.1)
   rails_layout
+  rcredstash
   sass-rails (~> 5.0)
+  secret_env
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
