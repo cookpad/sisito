@@ -10,6 +10,7 @@
         <tr>
           <th>Recipient</th>
           <th>Senderdomain</th>
+          <th class="tight">CreatedAt</th>
           <th class="x-tight"></th>
         </tr>
       </thead>
@@ -19,6 +20,7 @@
           <tr>
             <td><%= whitelist_mail.recipient %></td>
             <td><%= whitelist_mail.senderdomain %></td>
+            <td><%= whitelist_mail.created_at %></td>
             <td>
               <%= link_to whitelist_mail, method: :delete, data: { confirm: 'Are you sure?' } do %>
                 <span class="glyphicon glyphicon-remove"></span>
