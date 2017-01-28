@@ -1,0 +1,47 @@
+<section>
+  <div class="col-sm-12">
+    <div class="text-muted">
+      <span class="glyphicon glyphicon-stats"></span>
+      Tolal Unique Recipient Bounced
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-6">
+    <div id="uniq_count_by_destination"></div>
+  </div>
+  <div class="col-sm-6">
+    <div id="uniq_count_by_reason"></div>
+  </div>
+</section>
+
+<%= javascript_tag do %>
+  c3.generate({
+    bindto: '#uniq_count_by_destination',
+    data: {
+      columns: <%= raw(
+        @uniq_count_by_destination.to_a.slice(0, 3)
+          .push(['etc', @uniq_count_by_destination.values.slice(3..-1).sum])
+          .inspect
+      ) %>,
+      type: 'donut'
+    },
+    donut: {
+      title: '<%= @uniq_count_by_destination.values.sum %> recipients',
+    }
+  });
+<% end %>
+
+<%= javascript_tag do %>
+  c3.generate({
+    bindto: '#uniq_count_by_reason',
+    data: {
+      columns: <%= raw @uniq_count_by_reason.to_a.inspect %>,
+      type : 'donut'
+    },
+    donut: {
+      title: '<%= @uniq_count_by_reason.values.sum %> recipients',
+    }
+  });
+<% end %>

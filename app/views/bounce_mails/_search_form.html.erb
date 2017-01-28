@@ -1,5 +1,14 @@
 <section>
   <div class="col-sm-12">
+    <div class="text-muted">
+      <span class="glyphicon glyphicon-search"></span>
+      Search
+    </div>
+  </div>
+</section>
+
+<section class="disable-margin-top">
+  <div class="col-sm-12">
     <%= form_tag bounce_mails_path do %>
       <div class="form-group">
         <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3,placeholder: 'email (e.g. foo@example.com)  or  hash (e.g. 767e74eab7081c41e0b83630511139d130249666)' %>

@@ -1,7 +1,12 @@
+<% content_for(:header) do %>
+  <%= javascript_include_tag 'https://d3js.org/d3.v3.min.js' %>
+<% end %>
+
 <div class="page-header">
   <span class="glyphicon glyphicon-envelope"></span>
   <strong>Bounce Mails</strong>
 </div>
 
-<%= render 'chart' %>
+<%= render 'recent_bounced' %>
+<%= render 'total_unique_bounced' %>
 <%= render 'search_form' %>

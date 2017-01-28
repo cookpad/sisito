@@ -1,4 +1,11 @@
-<%= javascript_include_tag 'https://d3js.org/d3.v3.min.js' %>
+<section>
+  <div class="col-sm-12">
+    <div class="text-muted">
+      <span class="glyphicon glyphicon-stats"></span>
+      Recently Bounced
+    </p>
+  </div>
+</section>
 
 <section>
   <div class="col-sm-6">
@@ -39,7 +46,11 @@
     bindto: '#count_by_destination',
     size: {height: 200},
     data: {
-      columns: <%= raw @count_by_destination.to_a.inspect %>,
+      columns: <%= raw(
+        @count_by_destination.to_a.slice(0, 3)
+          .push(['etc', @count_by_destination.values.slice(3..-1).sum])
+          .inspect
+      ) %>,
       type : 'pie'
     }
   });
