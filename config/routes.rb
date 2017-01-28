@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: redirect('bounce_mails')
+  root to: 'stats#index'
 
   match 'bounce_mails', to: 'bounce_mails#index', via: [:get, :post]
   resources :bounce_mails, only: [:show]

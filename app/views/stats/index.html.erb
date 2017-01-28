@@ -1,0 +1,6 @@
+<% content_for(:header) do %>
+  <%= javascript_include_tag 'https://d3js.org/d3.v3.min.js' %>
+<% end %>
+
+<%= render 'recent_bounced' %>
+<%= render 'unique_recipient_bounced' %>

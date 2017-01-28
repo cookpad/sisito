@@ -1,5 +1,11 @@
 <%# add navigation links to this file %>
 <li>
+  <%= link_to root_path do %>
+    <span class="glyphicon glyphicon-stats"></span>
+    Statistics
+  <% end %>
+</li>
+<li>
   <%= link_to bounce_mails_path do %>
     <span class="glyphicon glyphicon-envelope"></span>
     Bounce Mails
