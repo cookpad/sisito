@@ -7,5 +7,5 @@ Rails.application.routes.draw do
   post 'whitelist_mails/register', to: 'whitelist_mails#register'
   resources :whitelist_mails, only: [:index, :new, :create, :destroy]
 
-  get 'admin', to: 'admin#index'
+  resources :admin, only: [:index, :show]
 end

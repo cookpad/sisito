@@ -1,0 +1,45 @@
+<div class="page-header">
+  <strong><%= @bounce_mail.recipient %></strong>
+</div>
+
+<section>
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="tight">Timestamp</th>
+          <th class="x-tight">Reason</th>
+          <th class="tight">Senderdomain</th>
+          <th>Diagnosticcode</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @history.each do |bounce_mail| %>
+          <tr>
+            <td><%= bounce_mail.timestamp %></td>
+            <td><%= bounce_mail.reason %></td>
+            <td><%= bounce_mail.senderdomain %></td>
+            <td><%= bounce_mail.diagnosticcode %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
+    <%= link_to admin_index_path do %>
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      Back
+    <% end %>
+    &nbsp;
+    <%= link_to whitelist_mails_register_path(
+          'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain, ),
+          method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to whitelist?" } do %>
+      <span class="glyphicon glyphicon-ok"></span>
+      Whitelist
+    <% end %>
+  </div>
+</section>

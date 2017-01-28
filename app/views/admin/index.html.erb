@@ -1,1 +1,49 @@
-index.html.erb
+<div class="page-header">
+  <span class="glyphicon glyphicon-envelope"></span>
+  <strong>All Bounce Mails</strong>
+</div>
+
+<section>
+  <div class="col-sm-12">
+    <% if @bounce_mails.present? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="tight">Timestamp</th>
+            <th>Recipient</th>
+            <th>Destination</th>
+            <th class="x-tight"></th>
+            <th class="x-tight"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @bounce_mails.each do |bounce_mail| %>
+            <tr>
+              <td><%= bounce_mail.timestamp %></td>
+              <td><%= bounce_mail.recipient %></td>
+              <td><%= bounce_mail.senderdomain %></td>
+              <td>
+                <%= link_to admin_path(bounce_mail) do %>
+                  <span class="glyphicon glyphicon-search"></span>
+                  Show
+                <% end %>
+              </td>
+              <td>
+                <%= link_to whitelist_mails_register_path(
+                      'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
+                      method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
+                  <span class="glyphicon glyphicon-ok"></span>
+                  Whitelist
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% elsif @query.present? %>
+      <span class="glyphicon glyphicon-flash"></span>
+      No results found for <strong><%= @query %></strong>
+    <% end %>
+  </div>
+</section>
