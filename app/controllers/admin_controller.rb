@@ -1,9 +1,7 @@
 require 'csv'
 
 class AdminController < ApplicationController
-  USERS = { "hello" => "world" }
-
-  before_action :authenticate, if: -> { Rails.env.production? }
+  before_action :authenticate
   before_action :set_bounce_mail, only: [:show, :destroy]
 
   def index
@@ -42,7 +40,9 @@ class AdminController < ApplicationController
 
   def authenticate
     authenticate_or_request_with_http_digest do |username|
-      USERS[username]
+      if username == Rails.application.config.admin[:username]
+        Rails.application.config.admin[:password]
+      end
     end
   end
 
