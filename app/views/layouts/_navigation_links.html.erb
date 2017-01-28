@@ -17,6 +17,12 @@
     Whitelist Mails
   <% end %>
 </li>
+<li>
+  <%= link_to admin_path do %>
+    <span class="glyphicon glyphicon-wrench"></span>
+    Admin
+  <% end %>
+</li>
 <% ENV.fetch('SISITO_HEADER_LINKS', '').split(?,).map {|i| i.split(?:, 2) }.each do |label, url| %>
   <li>
     <%= link_to url, target: '_blank' do %>
