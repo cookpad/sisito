@@ -13,6 +13,7 @@
           <th>Destination</th>
           <th class="x-tight"></th>
           <th class="x-tight"></th>
+          <th class="x-tight"></th>
         </tr>
       </thead>
 
@@ -36,15 +37,18 @@
                 Whitelist
               <% end %>
             </td>
+            <td>
+              <%= link_to admin_path(bounce_mail), method: :delete, data: { confirm: "Are you sure to delete '#{bounce_mail.recipient} from bounce list?" } do %>
+                <span class="glyphicon glyphicon-remove"></span>
+                Destroy
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   </div>
-</section>
-
-<section class="disable-margin-top">
-  <div class="col-sm-12 container text-center">
+  <div class="text-center">
     <%= paginate @bounce_mails %>
   </div>
 </section>

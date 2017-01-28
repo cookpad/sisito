@@ -37,7 +37,7 @@
     &nbsp;
     <%= link_to whitelist_mails_register_path(
           'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain, ),
-          method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to whitelist?" } do %>
+          method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to white list?" } do %>
       <span class="glyphicon glyphicon-ok"></span>
       Whitelist
     <% end %>

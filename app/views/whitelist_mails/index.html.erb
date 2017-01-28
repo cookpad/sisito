@@ -22,7 +22,7 @@
             <td><%= whitelist_mail.senderdomain %></td>
             <td><%= whitelist_mail.created_at %></td>
             <td>
-              <%= link_to whitelist_mail, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <%= link_to whitelist_mail, method: :delete, data: { confirm: "Are you sure to delete '#{whitelist_mail.recipient} from white list?" } do %>
                 <span class="glyphicon glyphicon-remove"></span>
                 Destroy
               <% end %>
@@ -31,6 +31,9 @@
         <% end %>
       </tbody>
     </table>
+    <div class="text-center">
+      <%= paginate @whitelist_mails %>
+    </div>
     <%= button_to 'New Whitelist Mail', new_whitelist_mail_path, method: 'get', class: 'btn btn-primary' %>
   </div>
 </section>

@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   USERS = { "hello" => "world" }
 
   before_action :authenticate, if: -> { Rails.env.production? }
-  before_action :set_bounce_mail, only: [:show]
+  before_action :set_bounce_mail, only: [:show, :destroy]
 
   def index
     @bounce_mails = BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason)
@@ -17,6 +17,11 @@ class AdminController < ApplicationController
   def show
     @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
                          .order(timestamp: :desc)
+  end
+
+  def destroy
+    BounceMail.delete_all(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
+    redirect_to admin_index_path, notice: 'Whitelist mail was successfully destroyed.'
   end
 
   private
