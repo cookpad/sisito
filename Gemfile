@@ -31,3 +31,4 @@ group :development do
   gem 'pry-rails'
 end
 gem 'c3-rails'
+gem 'kaminari'
