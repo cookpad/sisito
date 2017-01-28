@@ -46,8 +46,6 @@ class AdminController < ApplicationController
     end
   end
 
-  private
-
   def set_bounce_mail
     @bounce_mail = BounceMail.find(params[:id])
   end
