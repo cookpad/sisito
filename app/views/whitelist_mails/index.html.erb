@@ -5,6 +5,12 @@
 
 <section>
   <div class="col-sm-12">
+    <%= button_to 'New Whitelist Mail', new_whitelist_mail_path, method: 'get', class: 'btn btn-primary' %>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
     <table class="table">
       <thead>
         <tr>
@@ -31,9 +37,11 @@
         <% end %>
       </tbody>
     </table>
-    <div class="text-center">
-      <%= paginate @whitelist_mails %>
-    </div>
-    <%= button_to 'New Whitelist Mail', new_whitelist_mail_path, method: 'get', class: 'btn btn-primary' %>
+  </div>
+</section>
+
+<section class="disable-margin-top">
+  <div class="col-sm-12 text-center">
+    <%= paginate @whitelist_mails %>
   </div>
 </section>

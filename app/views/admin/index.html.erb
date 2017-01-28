@@ -5,6 +5,12 @@
 
 <section>
   <div class="col-sm-12">
+    <%= button_to 'Download CSV', admin_download_path, method: 'get', class: 'btn btn-primary' %>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
     <table class="table">
       <thead>
         <tr>
@@ -48,7 +54,10 @@
       </tbody>
     </table>
   </div>
-  <div class="text-center">
+</section>
+
+<section class="disable-margin-top">
+  <div class="col-sm-12 text-center">
     <%= paginate @bounce_mails %>
   </div>
 </section>

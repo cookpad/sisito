@@ -1,3 +1,5 @@
+require 'csv'
+
 class AdminController < ApplicationController
   USERS = { "hello" => "world" }
 
@@ -22,6 +24,18 @@ class AdminController < ApplicationController
   def destroy
     BounceMail.delete_all(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
     redirect_to admin_index_path, notice: 'Whitelist mail was successfully destroyed.'
+  end
+
+  def download
+    csv = CSV.generate do |rows|
+      rows << BounceMail.column_names
+
+      BounceMail.all.each do |bounce_mail|
+        rows << bounce_mail.attributes.values_at(*BounceMail.column_names)
+      end
+    end
+
+    send_data csv, filename: 'bounce_mails.csv', type: :csv
   end
 
   private
