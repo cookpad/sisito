@@ -11,6 +11,7 @@ class AdminController < ApplicationController
                                       ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                                .where('whitelist_mails.recipient IS NULL')
                                .group(:recipient)
+                               .order(:recipient)
                                .page(params[:page])
   end
 
