@@ -14,7 +14,6 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="tight">Timestamp</th>
           <th>Recipient</th>
           <th>Destination</th>
           <th class="x-tight"></th>
@@ -26,7 +25,6 @@
       <tbody>
         <% @bounce_mails.each do |bounce_mail| %>
           <tr>
-            <td><%= bounce_mail.timestamp %></td>
             <td><%= bounce_mail.recipient %></td>
             <td><%= bounce_mail.senderdomain %></td>
             <td>
@@ -36,11 +34,13 @@
               <% end %>
             </td>
             <td>
-              <%= link_to whitelist_mails_register_path(
-                    'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
-                    method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
-                <span class="glyphicon glyphicon-ok"></span>
-                Whitelist
+              <% unless bounce_mail.whitelisted %>
+                <%= link_to whitelist_mails_register_path(
+                      'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
+                      method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
+                  <span class="glyphicon glyphicon-ok"></span>
+                  Whitelist
+                <% end %>
               <% end %>
             </td>
             <td>

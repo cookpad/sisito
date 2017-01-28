@@ -2,7 +2,7 @@ class WhitelistMailsController < ApplicationController
   before_action :set_whitelist_mail, only: [:destroy]
 
   def index
-    @whitelist_mails = WhitelistMail.all.page(params[:page])
+    @whitelist_mails = WhitelistMail.all.order(created_at: :desc).page(params[:page])
   end
 
   def new
