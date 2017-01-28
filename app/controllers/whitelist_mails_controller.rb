@@ -2,7 +2,7 @@ class WhitelistMailsController < ApplicationController
   before_action :set_whitelist_mail, only: [:destroy]
 
   def index
-    @whitelist_mails = WhitelistMail.all
+    @whitelist_mails = WhitelistMail.all.page(params[:page])
   end
 
   def new
@@ -31,7 +31,7 @@ class WhitelistMailsController < ApplicationController
 
   def destroy
     @whitelist_mail.destroy
-    redirect_to whitelist_mails_url, notice: 'Whitelist mail was successfully destroyed.'
+    redirect_to whitelist_mails_path, notice: 'Whitelist mail was successfully destroyed.'
   end
 
   private

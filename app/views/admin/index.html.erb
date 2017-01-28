@@ -1,0 +1,63 @@
+<div class="page-header">
+  <span class="glyphicon glyphicon-envelope"></span>
+  <strong>All Bounce Mails</strong>
+</div>
+
+<section>
+  <div class="col-sm-12">
+    <%= button_to 'Download CSV', admin_download_path, method: 'get', class: 'btn btn-primary' %>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="tight">Timestamp</th>
+          <th>Recipient</th>
+          <th>Destination</th>
+          <th class="x-tight"></th>
+          <th class="x-tight"></th>
+          <th class="x-tight"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @bounce_mails.each do |bounce_mail| %>
+          <tr>
+            <td><%= bounce_mail.timestamp %></td>
+            <td><%= bounce_mail.recipient %></td>
+            <td><%= bounce_mail.senderdomain %></td>
+            <td>
+              <%= link_to admin_path(bounce_mail) do %>
+                <span class="glyphicon glyphicon-search"></span>
+                Show
+              <% end %>
+            </td>
+            <td>
+              <%= link_to whitelist_mails_register_path(
+                    'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
+                    method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
+                <span class="glyphicon glyphicon-ok"></span>
+                Whitelist
+              <% end %>
+            </td>
+            <td>
+              <%= link_to admin_path(bounce_mail), method: :delete, data: { confirm: "Are you sure to delete '#{bounce_mail.recipient} from bounce list?" } do %>
+                <span class="glyphicon glyphicon-remove"></span>
+                Destroy
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="disable-margin-top">
+  <div class="col-sm-12 text-center">
+    <%= paginate @bounce_mails %>
+  </div>
+</section>

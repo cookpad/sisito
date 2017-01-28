@@ -30,7 +30,7 @@
 
 <section>
   <div class="col-sm-12">
-    <%= link_to bounce_mails_path do %>
+    <%= link_to admin_index_path do %>
       <span class="glyphicon glyphicon-chevron-left"></span>
       Back
     <% end %>
@@ -40,6 +40,11 @@
           method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to white list?" } do %>
       <span class="glyphicon glyphicon-ok"></span>
       Whitelist
+    <% end %>
+    &nbsp;
+    <%= link_to admin_path(@bounce_mail), method: :delete, data: { confirm: "Are you sure to delete '#{@bounce_mail.recipient} from bounce list?" } do %>
+      <span class="glyphicon glyphicon-remove"></span>
+      Destroy
     <% end %>
   </div>
 </section>
