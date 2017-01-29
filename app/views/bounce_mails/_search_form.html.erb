@@ -5,7 +5,7 @@
         <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3,placeholder: 'email (e.g. foo@example.com)  or  hash (e.g. 767e74eab7081c41e0b83630511139d130249666)' %>
       </div>
       <%= submit_tag 'Search', class: 'btn btn-primary' %>
-      <%= submit_tag :input, value: 'Clear', onclick: "$('#query').text('');", class: 'btn btn-default' %>
+      <%= submit_tag 'Clear', onclick: "$('#query').text('');", class: 'btn btn-default' %>
     <% end %>
   </div>
 </section>
@@ -37,11 +37,15 @@
                 <% end %>
               </td>
               <td>
-                <%= link_to whitelist_mails_register_path(
-                      'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
-                      method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
-                  <span class="glyphicon glyphicon-ok"></span>
-                  Whitelist
+                <% if bounce_mail.whitelisted %>
+                  <span class="label label-success">Whitelisted</span>
+                <% else %>
+                  <%= link_to whitelist_mails_register_path(
+                        'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
+                        method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
+                    <span class="glyphicon glyphicon-ok"></span>
+                    Whitelist
+                  <% end %>
                 <% end %>
               </td>
             </tr>

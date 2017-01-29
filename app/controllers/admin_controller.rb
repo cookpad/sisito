@@ -5,13 +5,13 @@ class AdminController < ApplicationController
   before_action :set_bounce_mail, only: [:show, :destroy]
 
   def index
-    @bounce_mails = BounceMail.select(:id, :recipient, :senderdomain, :reason, 'whitelist_mails.recipient AS whitelisted')
-                               .joins('LEFT JOIN whitelist_mails' +
-                                      '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
-                                      ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                               .group(:recipient)
-                               .order(:recipient)
-                               .page(params[:page])
+    @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+                              .joins('LEFT JOIN whitelist_mails' +
+                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                              .group(:recipient)
+                              .order(:recipient)
+                              .page(params[:page])
   end
 
   def show
@@ -25,11 +25,20 @@ class AdminController < ApplicationController
   end
 
   def download
-    csv = CSV.generate do |rows|
-      rows << BounceMail.column_names
+    bounce_mails = BounceMail.select('bounce_mails.*', 'IF(whitelist_mails.recipient IS NULL, 0, 1) AS whitelisted')
+                             .joins('LEFT JOIN whitelist_mails' +
+                                    '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                    ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                             .group(:recipient)
+                             .order(:recipient)
 
-      BounceMail.all.each do |bounce_mail|
-        rows << bounce_mail.attributes.values_at(*BounceMail.column_names)
+    column_names = %w(recipient senderdomain reason whitelisted)
+
+    csv = CSV.generate do |rows|
+      rows << column_names
+
+      bounce_mails.each do |bounce_mail|
+        rows << bounce_mail.attributes.values_at(*column_names)
       end
     end
 
@@ -49,6 +58,10 @@ class AdminController < ApplicationController
   end
 
   def set_bounce_mail
-    @bounce_mail = BounceMail.find(params[:id])
+    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+                             .joins('LEFT JOIN whitelist_mails' +
+                                    '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                    ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                             .find(params[:id])
   end
 end
