@@ -1,0 +1,39 @@
+<div class="page-header">
+  <strong>New Confirmation Mail</strong>
+</div>
+
+<section>
+  <div class="col-sm-12">
+    <% if @confirmation_mail.errors.any? %>
+      <div class="alert alert-danger">
+        <% @confirmation_mail.errors.full_messages.each do |message| %>
+          <%= message %><br/>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= form_for @confirmation_mail, url: sender_path do |f| %>
+      <div class="form-group">
+        <%= f.label :from, class: 'control-label' %>
+        <%= f.select :from, options_for_select(@select_from_options), {}, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :to, class: 'control-label' %>
+        <%= f.text_field :to, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :subject, class: 'control-label' %>
+        <%= f.text_field :subject, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :body, class: 'control-label' %>
+        <%= f.text_area :body, class: 'form-control', rows: 10 %>
+      </div>
+
+      <%= f.submit value: 'Send Confirmation mail', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</section>

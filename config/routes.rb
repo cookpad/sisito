@@ -9,4 +9,8 @@ Rails.application.routes.draw do
 
   get 'admin/download', to: 'admin#download'
   resources :admin, only: [:index, :show, :destroy]
+
+  get 'sender', to: 'sender#index'
+  post 'sender', to: 'sender#create'
+  get 'sent', to: 'sender#sent'
 end

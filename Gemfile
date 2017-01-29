@@ -32,3 +32,4 @@ group :development do
 end
 gem 'c3-rails'
 gem 'kaminari'
+gem 'clipboard-rails'

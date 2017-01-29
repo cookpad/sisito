@@ -39,9 +39,11 @@ class AdminController < ApplicationController
   private
 
   def authenticate
+    sisito_config = Rails.application.config.sisito
+
     authenticate_or_request_with_http_digest do |username|
-      if username == Rails.application.config.admin[:username]
-        Rails.application.config.admin[:password]
+      if username == sisito_config.fetch(:admin).fetch(:username)
+        sisito_config.fetch(:admin).fetch(:password)
       end
     end
   end

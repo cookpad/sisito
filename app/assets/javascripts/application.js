@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require c3
+//= require clipboard
 //= require_tree .

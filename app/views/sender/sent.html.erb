@@ -1,0 +1,27 @@
+<section>
+  <div class="form-horizontal">
+    <%= label_tag :digest, 'Digest:', class: 'col-sm-1 control-label' %>
+    <div class="input-group col-sm-6">
+      <%= text_field_tag :digest, @digest, class: 'form-control', readonly: true %>
+      <span class="input-group-btn">
+        <%= button_tag 'Copy', id: 'copy-button', class: 'btn btn-default',
+              'data-clipboard-action': 'copy', 'data-clipboard-target': '#digest' %>
+      </span>
+    </div>
+
+    </div>
+  </div>
+</section>
+
+<%= javascript_tag do %>
+  new Clipboard('#copy-button');
+<% end %>
+
+<section>
+  <div class="col-sm-12">
+    <%= link_to sender_path do %>
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      Back
+    <% end %>
+  </div>
+</section>

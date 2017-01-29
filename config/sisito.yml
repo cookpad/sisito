@@ -1,0 +1,10 @@
+admin:
+  username: admin
+  password: pass
+smtp:
+  foo@example.com:
+    host: localhost
+    port: 25
+digest: sha1
+header_links:
+  "Example Domain": http://example.com/
