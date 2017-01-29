@@ -6,6 +6,7 @@ class ConfirmationMailer < ApplicationMailer
     mail(from: confirmation_mail.from,
          to: confirmation_mail.to,
          subject: confirmation_mail.subject,
-         body: confirmation_mail.body)
+         body: confirmation_mail.body,
+         delivery_method_options: delivery_options)
   end
 end
