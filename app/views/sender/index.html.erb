@@ -33,7 +33,8 @@
         <%= f.text_area :body, class: 'form-control', rows: 10 %>
       </div>
 
-      <%= f.submit value: 'Send Confirmation mail', class: 'btn btn-primary' %>
+      <%= f.submit value: 'Send Confirmation mail', class: 'btn btn-primary', data: {confirm: 'Are you sure you want to send mail?'} %>
+
     <% end %>
   </div>
 </section>

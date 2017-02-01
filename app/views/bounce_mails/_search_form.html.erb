@@ -10,16 +10,19 @@
   </div>
 </section>
 
-<section>
-  <div class="col-sm-12">
-    <% if @bounce_mails.present? %>
+<% if @bounce_mails.present? %>
+  <section>
+    <div class="col-sm-12">
       <table class="table">
         <thead>
           <tr>
-            <th class="tight">Timestamp</th>
+            <th class="x-tight">Timestamp</th>
             <th>Recipient</th>
-            <th>Destination</th>
-            <th class="x-tight"></th>
+            <th class="tight">Destination</th>
+            <th class="x-tight">Reason</th>
+            <% unless @mask %>
+              <th class="x-tight"></th>
+            <% end %>
             <th class="x-tight"></th>
           </tr>
         </thead>
@@ -27,15 +30,18 @@
         <tbody>
           <% @bounce_mails.each do |bounce_mail| %>
             <tr>
-              <td><%= bounce_mail.timestamp %></td>
-              <td><%= bounce_mail.recipient %></td>
+              <td><%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %></td>
+              <td><%= @mask ? bounce_mail.mask_recipient : bounce_mail.recipient %></td>
               <td><%= bounce_mail.senderdomain %></td>
-              <td>
-                <%= link_to bounce_mail do %>
-                  <span class="glyphicon glyphicon-search"></span>
-                  Show
-                <% end %>
-              </td>
+              <td><%= bounce_mail.reason %></td>
+              <% unless @mask %>
+                <td>
+                  <%= link_to bounce_mail_path(bounce_mail, digest: bounce_mail.digest) do %>
+                    <span class="glyphicon glyphicon-search"></span>
+                    Show
+                  <% end %>
+                </td>
+              <% end %>
               <td>
                 <% if bounce_mail.whitelisted %>
                   <span class="label label-success">Whitelisted</span>
@@ -52,9 +58,20 @@
           <% end %>
         </tbody>
       </table>
-    <% elsif @query.present? %>
+    </div>
+  </section>
+  <% if @mask %>
+    <section class="disable-margin-top">
+      <div class="col-sm-12 text-center">
+        <%= paginate @bounce_mails %>
+      </div>
+    </section>
+  <% end %>
+<% elsif @query.present? %>
+  <section>
+    <div class="col-sm-12">
       <span class="glyphicon glyphicon-flash"></span>
       No results found for <strong><%= @query %></strong>
-    <% end %>
-  </div>
-</section>
+    </div>
+  </section>
+<% end %>

@@ -9,7 +9,7 @@ class AdminController < ApplicationController
                               .joins('LEFT JOIN whitelist_mails' +
                                      '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                      ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                              .group(:recipient)
+                              .group(:recipient, :senderdomain)
                               .order(:recipient)
                               .page(params[:page])
   end
@@ -29,7 +29,7 @@ class AdminController < ApplicationController
                              .joins('LEFT JOIN whitelist_mails' +
                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                             .group(:recipient)
+                             .group(:recipient, :senderdomain)
                              .order(:recipient)
 
     column_names = %w(recipient senderdomain reason whitelisted)

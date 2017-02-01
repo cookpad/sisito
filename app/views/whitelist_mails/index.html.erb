@@ -16,7 +16,7 @@
         <tr>
           <th>Recipient</th>
           <th>Senderdomain</th>
-          <th class="tight">CreatedAt</th>
+          <th class="x-tight">CreatedAt</th>
           <th class="x-tight"></th>
         </tr>
       </thead>
@@ -26,7 +26,7 @@
           <tr>
             <td><%= whitelist_mail.recipient %></td>
             <td><%= whitelist_mail.senderdomain %></td>
-            <td><%= whitelist_mail.created_at %></td>
+            <td><%= whitelist_mail.created_at.strftime('%-m/%-d %-H:%M') %></td>
             <td>
               <%= link_to whitelist_mail, method: :delete, data: { confirm: "Are you sure to delete '#{whitelist_mail.recipient} from white list?" } do %>
                 <span class="glyphicon glyphicon-remove"></span>

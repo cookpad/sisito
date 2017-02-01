@@ -25,19 +25,34 @@ class BounceMailsController < ApplicationController
 
         {recipient: recipients, digest: digests}.each {|k, v|
           if v.present?
-            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain,
+            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason, :digest,
                                                'whitelist_mails.recipient AS whitelisted')
                                        .joins('LEFT JOIN whitelist_mails' +
                                               '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                               ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                                       .where(k => v).group(:recipient)
+                                       .where(k => v).group(:recipient, :senderdomain)
           end
         }
+      else
+        @bounce_mails = BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason, :digest,
+                                          'whitelist_mails.recipient AS whitelisted')
+                                  .joins('LEFT JOIN whitelist_mails' +
+                                         '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                         ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                                  .group(:recipient, :senderdomain)
+                                  .order(:timestamp)
+                                  .page(params[:page])
+
+        @mask = true
       end
     end
   end
 
   def show
+    if @bounce_mail.digest != params[:digest]
+      render plain: '', status: :forbidden
+    end
+
     @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
                          .order(timestamp: :desc)
   end
