@@ -22,8 +22,8 @@
             <th class="x-tight">Reason</th>
             <% unless @mask %>
               <th class="x-tight"></th>
+              <th class="x-tight"></th>
             <% end %>
-            <th class="x-tight"></th>
           </tr>
         </thead>
 
@@ -41,19 +41,19 @@
                     Show
                   <% end %>
                 </td>
-              <% end %>
-              <td>
-                <% if bounce_mail.whitelisted %>
-                  <span class="label label-success">Whitelisted</span>
-                <% else %>
-                  <%= link_to whitelist_mails_register_path(
-                        'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
-                        method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
-                    <span class="glyphicon glyphicon-ok"></span>
-                    Whitelist
+                <td>
+                  <% if bounce_mail.whitelisted %>
+                    <span class="label label-success">Whitelisted</span>
+                  <% else %>
+                    <%= link_to whitelist_mails_register_path(
+                          'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
+                          method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
+                      <span class="glyphicon glyphicon-ok"></span>
+                      Whitelist
+                    <% end %>
                   <% end %>
-                <% end %>
-              </td>
+                </td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>
