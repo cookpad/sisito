@@ -8,10 +8,16 @@
               'data-clipboard-action': 'copy', 'data-clipboard-target': '#digest' %>
       </span>
     </div>
-
-    </div>
   </div>
 </section>
+
+<% if digest_link = Rails.application.config.sisito[:digest_link] %>
+  <section>
+    <div class="col-sm-12">
+      <%= button_to 'Open Digest Link', digest_link % {digest: @digest}, method: 'get', class: 'btn btn-primary', form: {target: '_blank'} %>
+    </div>
+  </section>
+<% end %>
 
 <%= javascript_tag do %>
   new Clipboard('#copy-button');

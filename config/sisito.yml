@@ -6,5 +6,6 @@ smtp:
     host: localhost
     port: 25
 digest: sha1
+#digest_link: "https://localhost:9200/_plugin/kibana/#/discover?_a=(index:'maillog-*',query:(query_string:(query:'digest:%{digest}')))"
 header_links:
   "Example Domain": http://example.com/
