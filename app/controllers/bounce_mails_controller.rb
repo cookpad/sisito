@@ -40,7 +40,7 @@ class BounceMailsController < ApplicationController
                                          '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                          ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                                   .group(:recipient, :senderdomain)
-                                  .order(:timestamp)
+                                  .order(timestamp: :desc)
                                   .page(params[:page])
 
         @mask = true
