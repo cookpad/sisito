@@ -11,10 +11,10 @@
   </div>
 </section>
 
-<% if digest_link = Rails.application.config.sisito[:digest_link] %>
+<% if mail_link = Rails.application.config.sisito[:mail_link] %>
   <section>
     <div class="col-sm-12">
-      <%= button_to 'Open Digest Link', digest_link % {digest: @digest}, method: 'get', class: 'btn btn-primary', form: {target: '_blank'} %>
+      <%= button_to 'Open Digest Link', mail_link % {digest: @digest}, method: 'get', class: 'btn btn-primary', form: {target: '_blank'} %>
     </div>
   </section>
 <% end %>
