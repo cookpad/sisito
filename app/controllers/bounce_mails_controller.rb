@@ -34,12 +34,9 @@ class BounceMailsController < ApplicationController
           end
         }
       else
-        @bounce_mails = BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason, :digest,
-                                          'whitelist_mails.recipient AS whitelisted')
-                                  .joins('LEFT JOIN whitelist_mails' +
+        @bounce_mails = BounceMail.joins('LEFT JOIN whitelist_mails' +
                                          '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                          ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                                  .group(:recipient, :senderdomain)
                                   .order(timestamp: :desc)
                                   .page(params[:page])
 
