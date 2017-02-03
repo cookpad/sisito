@@ -10,7 +10,7 @@ class SenderController < ApplicationController
 
     if @confirmation_mail.save
       algorithm = Rails.application.config.sisito.fetch(:digest)
-      digest = algorithm.hexdigest(@confirmation_mail.to)
+      digest = algorithm.hexdigest(@confirmation_mail.to.strip)
       redirect_to sent_path(digest: digest), notice: 'Confirmation mail was successfully sent.'
     else
       render :index
