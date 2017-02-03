@@ -4,11 +4,14 @@
 </div>
 
 <section>
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <div id="uniq_count_by_destination"></div>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <div id="uniq_count_by_reason"></div>
+  </div>
+  <div class="col-sm-4">
+    <div id="uniq_count_by_senderdomain"></div>
   </div>
 </section>
 
@@ -18,7 +21,7 @@
     data: {
       columns: <%= raw(
         @uniq_count_by_destination.to_a.slice(0, 3)
-          .push(['etc', @uniq_count_by_destination.values.slice(3..-1).sum])
+          .push(['etc', @uniq_count_by_destination.values.slice(3..-1).try(:sum)])
           .inspect
       ) %>,
       type: 'donut'
@@ -38,6 +41,19 @@
     },
     donut: {
       title: '<%= @uniq_count_by_reason.values.sum %> recipients',
+    }
+  });
+<% end %>
+
+<%= javascript_tag do %>
+  c3.generate({
+    bindto: '#uniq_count_by_senderdomain',
+    data: {
+      columns: <%= raw @uniq_count_by_senderdomain.to_a.inspect %>,
+      type : 'donut'
+    },
+    donut: {
+      title: '<%= @uniq_count_by_senderdomain.values.sum %> recipients',
     }
   });
 <% end %>

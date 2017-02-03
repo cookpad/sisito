@@ -44,7 +44,7 @@
     data: {
       columns: <%= raw(
         @count_by_destination.to_a.slice(0, 3)
-          .push(['etc', @count_by_destination.values.slice(3..-1).sum])
+          .push(['etc', @count_by_destination.values.slice(3..-1).try(:sum)])
           .inspect
       ) %>,
       type : 'pie'

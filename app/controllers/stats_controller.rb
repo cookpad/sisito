@@ -28,5 +28,9 @@ class StatsController < ApplicationController
     @uniq_count_by_reason = Rails.cache.fetch(:uniq_count_by_reason, expires_in: 1.hour) do
       BounceMail.uniq.group(:reason).count(:recipient)
     end
+
+    @uniq_count_by_senderdomain = Rails.cache.fetch(:uniq_count_by_senderdomain, expires_in: 1.hour) do
+      BounceMail.uniq.group(:senderdomain).count(:recipient)
+    end
   end
 end

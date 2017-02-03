@@ -14,6 +14,24 @@ class AdminController < ApplicationController
                               .page(params[:page])
   end
 
+  def search
+    @query = params[:query]
+    phrases = @query.split(/\s+/)
+
+    if (params[:commit] == 'Search' and @query.blank?) or params[:commit] == 'Clear'
+      redirect_to admin_index_path
+    else
+      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+                                .joins('LEFT JOIN whitelist_mails' +
+                                       '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                       ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                                .where(phrases.map { 'bounce_mails.recipient LIKE ?' }.join('OR'), *phrases)
+                                .group(:recipient, :senderdomain)
+                                .order(:recipient)
+      render :index
+    end
+  end
+
   def show
     @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
                          .order(timestamp: :desc)
