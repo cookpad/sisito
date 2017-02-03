@@ -8,7 +8,7 @@
   <div class="col-sm-12">
     <%= form_tag admin_search_path do %>
       <div class="form-group">
-        <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3,placeholder: 'sql like synta email (e.g. %@example.com)' %>
+        <%= text_area_tag :query, @query || '', class: 'form-control', rows: 3,placeholder: 'email (SQL LIKE syntax: e.g. %@example.com)' %>
       </div>
       <%= submit_tag 'Search', class: 'btn btn-primary' %>
       <%= submit_tag 'Clear', onclick: "$('#query').text('');", class: 'btn btn-default' %>
