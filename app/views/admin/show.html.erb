@@ -13,6 +13,7 @@
           <th class="tight">Timestamp</th>
           <th class="x-tight">Reason</th>
           <th class="tight">Senderdomain</th>
+          <th>Subject</th>
           <th>Diagnosticcode</th>
         </tr>
       </thead>
@@ -23,6 +24,7 @@
             <td><%= bounce_mail.timestamp %></td>
             <td><%= bounce_mail.reason %></td>
             <td><%= bounce_mail.senderdomain %></td>
+            <td><%= bounce_mail.subject %></td>
             <td><%= bounce_mail.diagnosticcode %></td>
           </tr>
         <% end %>
