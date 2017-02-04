@@ -10,7 +10,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="tight">Timestamp</th>
+          <th class="x-tight">Timestamp</th>
           <th class="x-tight">Reason</th>
           <th class="tight">Senderdomain</th>
           <th>Subject</th>
@@ -21,7 +21,7 @@
       <tbody>
         <% @history.each do |bounce_mail| %>
           <tr>
-            <td><%= bounce_mail.timestamp %></td>
+            <td><%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %></td>
             <td><%= bounce_mail.reason %></td>
             <td><%= bounce_mail.senderdomain %></td>
             <td><%= bounce_mail.subject %></td>
