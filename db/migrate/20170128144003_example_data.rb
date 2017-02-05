@@ -13,8 +13,9 @@ class ExampleData < ActiveRecord::Migration[5.0]
       BounceMail.create!(row)
     end
 
-    [{recipient: "zoo1@test3.example.com", senderdomain: "example.com", created_at: Date.today - 1.day, updated_at: Date.today - 1.day},
-     {recipient: "baz1@test4.example.com", senderdomain: "example.com", created_at: Date.today + 1.day, updated_at: Date.today + 1.day},
+    [{recipient: "zoo1@test3.example.com", senderdomain: "example.com", created_at: Date.today - 3.day, updated_at: Date.today - 3.day},
+     {recipient: "baz1@test4.example.com", senderdomain: "example.com", created_at: Date.today - 2.day, updated_at: Date.today - 2.day},
+     {recipient: "foo1@test1.example.com", senderdomain: "example.com", created_at: Date.today        , updated_at: Date.today        },
     ].each do |row|
       WhitelistMail.create!(row)
     end

@@ -57,10 +57,11 @@ class BounceMailsController < ApplicationController
   private
 
   def set_bounce_mail
-    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
                              .joins('LEFT JOIN whitelist_mails' +
                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                             .group(:recipient, :senderdomain)
                              .find(params[:id])
   end
 end

@@ -2,7 +2,13 @@ class WhitelistMailsController < ApplicationController
   before_action :set_whitelist_mail, only: [:destroy]
 
   def index
-    @whitelist_mails = WhitelistMail.all.order(created_at: :desc).page(params[:page])
+    @whitelist_mails = WhitelistMail.select('whitelist_mails.*', 'MAX(bounce_mails.timestamp) AS max_bounce_mail_timestamp')
+                                .joins('LEFT JOIN bounce_mails' +
+                                       '  ON whitelist_mails.recipient = bounce_mails.recipient ' +
+                                       ' AND whitelist_mails.senderdomain = bounce_mails.senderdomain')
+                                .group(:recipient, :senderdomain)
+                                .order(created_at: :desc)
+                                .page(params[:page])
   end
 
   def new

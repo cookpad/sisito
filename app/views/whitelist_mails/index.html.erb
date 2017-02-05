@@ -15,8 +15,9 @@
       <thead>
         <tr>
           <th>Recipient</th>
-          <th>Senderdomain</th>
+          <th class="tight">Senderdomain</th>
           <th class="x-tight">CreatedAt</th>
+          <th class="tight">LatestBounced</th>
           <th class="x-tight"></th>
         </tr>
       </thead>
@@ -27,6 +28,12 @@
             <td><%= whitelist_mail.recipient %></td>
             <td><%= whitelist_mail.senderdomain %></td>
             <td><%= whitelist_mail.created_at.strftime('%-m/%-d %-H:%M') %></td>
+            <td>
+              <%= whitelist_mail.max_bounce_mail_timestamp.strftime('%-m/%-d %-H:%M') %>
+              <% if whitelist_mail.max_bounce_mail_timestamp > whitelist_mail.created_at %>
+                <span class="label label-warning">Bounce over</span>
+              <% end %>
+            </td>
             <td>
               <%= link_to whitelist_mail, method: :delete, data: { confirm: "Are you sure to delete '#{whitelist_mail.recipient} from white list?" } do %>
                 <span class="glyphicon glyphicon-remove"></span>
