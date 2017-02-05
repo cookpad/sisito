@@ -24,7 +24,7 @@ class CreateBounceMails < ActiveRecord::Migration[5.0]
       t.string   "digest",         default: "", null: false
       t.datetime "created_at",                  null: false
       t.datetime "updated_at",                  null: false
-      t.index ["addresser"], name: "idx_addresser", using: :btree
+      t.index ["addresser"], name: "idx_addresser_senderdomain", using: :btree
       t.index ["destination"], name: "idx_destination", using: :btree
       t.index ["digest"], name: "idx_digest", using: :btree
       t.index ["messageid"], name: "idx_messageid", using: :btree

@@ -12,5 +12,11 @@ class ExampleData < ActiveRecord::Migration[5.0]
     }.each do |row|
       BounceMail.create!(row)
     end
+
+    [{recipient: "zoo1@test3.example.com", senderdomain: "example.com", created_at: Date.today - 1.day, updated_at: Date.today - 1.day},
+     {recipient: "baz1@test4.example.com", senderdomain: "example.com", created_at: Date.today + 1.day, updated_at: Date.today + 1.day},
+    ].each do |row|
+      WhitelistMail.create!(row)
+    end
   end
 end
