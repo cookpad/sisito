@@ -46,9 +46,10 @@
                   <span class="label label-success">Whitelisted</span>
                 <% else %>
                   <%= link_to whitelist_mails_register_path(
-                        'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain, ),
+                        'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain,
+                        return_to: current_page?(admin_search_path) ? admin_search_path : admin_index_path(page: params[:page])),
                         method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="glyphicon glyphicon-check"></span>
                     Whitelist
                   <% end %>
                 <% end %>

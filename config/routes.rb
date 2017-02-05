@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :bounce_mails, only: [:show]
 
   post 'whitelist_mails/register', to: 'whitelist_mails#register'
+  post 'whitelist_mails/deregister', to: 'whitelist_mails#deregister'
   resources :whitelist_mails, only: [:index, :new, :create, :destroy]
 
   get 'admin/download', to: 'admin#download'

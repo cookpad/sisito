@@ -39,12 +39,19 @@
       <span class="glyphicon glyphicon-chevron-left"></span>
       Back
     <% end %>
-    <% unless @bounce_mail.whitelisted %>
-      &nbsp;
+    &nbsp;
+    <% if @bounce_mail.whitelisted %>
+      <%= link_to whitelist_mails_deregister_path(
+            'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain, return_to: admin_path(@bounce_mail)),
+            method: :post, data: { confirm: "Are you sure you want to deregister '#{@bounce_mail.recipient}' from white list?" } do %>
+        <span class="glyphicon glyphicon-unchecked"></span>
+        Unwhitelist
+      <% end %>
+    <% else %>
       <%= link_to whitelist_mails_register_path(
-            'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain, ),
+            'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain, return_to: admin_path(@bounce_mail)),
             method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to white list?" } do %>
-        <span class="glyphicon glyphicon-ok"></span>
+        <span class="glyphicon glyphicon-check"></span>
         Whitelist
       <% end %>
     <% end %>

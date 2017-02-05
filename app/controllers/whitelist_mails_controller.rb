@@ -22,11 +22,29 @@ class WhitelistMailsController < ApplicationController
   def register
     whitelist_mail = WhitelistMail.new(whitelist_mail_params)
 
-    unless WhitelistMail.exists?(recipient: whitelist_mail.recipient)
+    unless WhitelistMail.exists?(recipient: whitelist_mail.recipient, senderdomain: whitelist_mail.senderdomain)
       whitelist_mail.save!
     end
 
-    redirect_to whitelist_mails_path
+    if params[:return_to]
+      redirect_to params[:return_to]
+    else
+      redirect_to whitelist_mails_path
+    end
+  end
+
+  def deregister
+    whitelist_mail = WhitelistMail.where(recipient: whitelist_mail_params[:recipient], senderdomain: whitelist_mail_params[:senderdomain]).take
+
+    if whitelist_mail
+      whitelist_mail.destroy!
+    end
+
+    if params[:return_to]
+      redirect_to params[:return_to]
+    else
+      redirect_to whitelist_mails_path
+    end
   end
 
   def destroy

@@ -39,13 +39,22 @@
       <span class="glyphicon glyphicon-chevron-left"></span>
       Back
     <% end %>
-    <% unless @bounce_mail.whitelisted %>
       &nbsp;
-      <%= link_to whitelist_mails_register_path(
-            'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain, ),
-            method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to white list?" } do %>
-        <span class="glyphicon glyphicon-ok"></span>
-        Whitelist
+      <% if @bounce_mail.whitelisted %>
+        <%= link_to whitelist_mails_deregister_path(
+              'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain,
+              return_to: bounce_mail_path(@bounce_mail, digest: @bounce_mail.digest)),
+              method: :post, data: { confirm: "Are you sure you want to deregister '#{@bounce_mail.recipient}' from white list?" } do %>
+          <span class="glyphicon glyphicon-unchecked"></span>
+          Unwhitelist
+        <% end %>
+      <% else %>
+        <%= link_to whitelist_mails_register_path(
+              'whitelist_mail[recipient]': @bounce_mail.recipient, 'whitelist_mail[senderdomain]': @bounce_mail.senderdomain,
+              return_to: bounce_mail_path(@bounce_mail, digest: @bounce_mail.digest)),
+              method: :post, data: { confirm: "Are you sure you want to register '#{@bounce_mail.recipient}' to white list?" } do %>
+          <span class="glyphicon glyphicon-check"></span>
+          Whitelist
       <% end %>
     <% end %>
   </div>
