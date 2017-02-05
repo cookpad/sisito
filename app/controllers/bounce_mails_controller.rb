@@ -5,7 +5,7 @@ class BounceMailsController < ApplicationController
     @query = params[:query] || cookies[:query]
 
     if (params[:commit] == 'Search' and @query.blank?) or params[:commit] == 'Clear'
-      cookies[:query] = ''
+      cookies.delete(:query)
       redirect_to bounce_mails_path
     else
       if @query.present?

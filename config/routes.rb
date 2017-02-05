@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :whitelist_mails, only: [:index, :new, :create, :destroy]
 
   get 'admin/download', to: 'admin#download'
-  post 'admin/search', to: 'admin#search'
+  match 'admin/search', to: 'admin#search', via: [:get, :post]
   resources :admin, only: [:index, :show, :destroy]
 
   get 'sender', to: 'sender#index'

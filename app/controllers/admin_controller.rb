@@ -5,22 +5,29 @@ class AdminController < ApplicationController
   before_action :set_bounce_mail, only: [:show, :destroy]
 
   def index
-    @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
-                              .joins('LEFT JOIN whitelist_mails' +
-                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
-                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                              .group(:recipient, :senderdomain)
-                              .order(:recipient)
-                              .page(params[:page])
+    if cookies[:admin_query].present?
+      redirect_to admin_search_path
+    else
+      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+                                .joins('LEFT JOIN whitelist_mails' +
+                                       '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                       ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                                .group(:recipient, :senderdomain)
+                                .order(:recipient)
+                                .page(params[:page])
+    end
   end
 
   def search
-    @query = params[:query]
+    @query = params[:query] || cookies[:admin_query]
     phrases = @query.split(/\s+/)
 
     if (params[:commit] == 'Search' and @query.blank?) or params[:commit] == 'Clear'
+      cookies.delete(:admin_query)
       redirect_to admin_index_path
     else
+      cookies[:admin_query] = @query
+
       @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
                                 .joins('LEFT JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
