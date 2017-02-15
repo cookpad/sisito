@@ -1,0 +1,37 @@
+<div class="page-header">
+  <span class="glyphicon glyphicon-stats"></span>
+  Bounced by Type
+</div>
+
+<% @bounced_by_type.sort_by(&:first).each_slice(3) do |chunk| %>
+  <section>
+    <% 3.times.map {|i| chunk[i] }.each do |reason, count_by_destination| %>
+      <div class="col-sm-4">
+        <% if reason.present? %>
+          <%= content_tag(:div, nil, id: "bounced_by_#{reason}") %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+
+  <% chunk.each do |reason, count_by_destination| %>
+    <% count_by_destination = count_by_destination.sort_by(&:last).reverse %>
+    <%= javascript_tag do %>
+      c3.generate({
+        bindto: '<%= "#bounced_by_#{reason}" %>',
+        data: {
+          columns: <%= raw(
+            count_by_destination.slice(0, 3)
+              .push(['etc', count_by_destination.map(&:last).slice(3..-1).try(:sum)])
+              .select {|_, v| v.present? }
+              .inspect
+          ) %>,
+          type : 'donut'
+        },
+        donut: {
+          title: '<%= reason %>',
+        }
+      });
+    <% end %>
+  <% end %>
+<% end %>

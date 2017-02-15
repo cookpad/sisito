@@ -22,6 +22,7 @@
       columns: <%= raw(
         @uniq_count_by_destination.to_a.slice(0, 3)
           .push(['etc', @uniq_count_by_destination.values.slice(3..-1).try(:sum)])
+          .select {|_, v| v.present? }
           .inspect
       ) %>,
       type: 'donut'

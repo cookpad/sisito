@@ -32,5 +32,16 @@ class StatsController < ApplicationController
     @uniq_count_by_senderdomain = Rails.cache.fetch(:uniq_count_by_senderdomain, expires_in: 1.hour) do
       BounceMail.uniq.group(:senderdomain).count(:recipient)
     end
+
+    # Bounced by Type
+    @bounced_by_type = Rails.cache.fetch(:bounced_by_type, expires_in: 1.hour) do
+      count_by_reason_destination = Hash.new {|h, k| h[k] = {} }
+
+      BounceMail.group(:reason, :destination).count.each do |(reason, destination), count|
+        count_by_reason_destination[reason][destination] = count
+      end
+
+      count_by_reason_destination
+    end
   end
 end
