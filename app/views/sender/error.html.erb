@@ -1,0 +1,13 @@
+<div class="page-header">
+  <strong>Email Sending Error</strong>
+</div>
+
+<section>
+  <div class="col-sm-12">
+    <pre><%= @error.message %></pre>
+    <%= link_to sender_path do %>
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      Back
+    <% end %>
+  </div>
+</section>

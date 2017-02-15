@@ -15,6 +15,9 @@ class SenderController < ApplicationController
     else
       render :index
     end
+  rescue Net::SMTPError => e
+    @error = e
+    render :error
   end
 
   def sent
