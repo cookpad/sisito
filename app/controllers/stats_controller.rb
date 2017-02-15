@@ -35,9 +35,10 @@ class StatsController < ApplicationController
 
     # Bounced by Type
     @bounced_by_type = Rails.cache.fetch(:bounced_by_type, expires_in: 1.hour) do
-      count_by_reason_destination = Hash.new {|h, k| h[k] = {} }
+      count_by_reason_destination = {}
 
       BounceMail.group(:reason, :destination).count.each do |(reason, destination), count|
+        count_by_reason_destination[reason] ||= {}
         count_by_reason_destination[reason][destination] = count
       end
 
