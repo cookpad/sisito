@@ -2,7 +2,11 @@ class BounceMailsController < ApplicationController
   before_action :set_bounce_mail, only: [:show]
 
   def index
-    @query = params[:query] || cookies[:query]
+    if params[:reason].present?
+      cookies.delete(:query)
+    else
+      @query = params[:query] || cookies[:query]
+    end
 
     if (params[:commit] == 'Search' and @query.blank?) or params[:commit] == 'Clear'
       cookies.delete(:query)
@@ -37,9 +41,13 @@ class BounceMailsController < ApplicationController
         @bounce_mails = BounceMail.joins('LEFT JOIN whitelist_mails' +
                                          '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                          ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                                  .order(timestamp: :desc)
-                                  .page(params[:page])
 
+        if params[:reason].present?
+          @reason = params[:reason]
+          @bounce_mails = @bounce_mails.where(reason: @reason)
+        end
+
+        @bounce_mails = @bounce_mails.order(timestamp: :desc).page(params[:page])
         @mask = true
       end
     end
