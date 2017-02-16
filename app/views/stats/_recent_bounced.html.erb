@@ -37,29 +37,33 @@
   });
 <% end %>
 
-<%= javascript_tag do %>
-  c3.generate({
-    bindto: '#count_by_destination',
-    size: {height: 200},
-    data: {
-      columns: <%= raw(
-        @count_by_destination.to_a.slice(0, 3)
-          .push(['etc', @count_by_destination.values.slice(3..-1).try(:sum)])
-          .select {|_, v| v.present? }
-          .inspect
-      ) %>,
-      type : 'pie'
-    }
-  });
+<% if @count_by_destination.present? %>
+  <%= javascript_tag do %>
+    c3.generate({
+      bindto: '#count_by_destination',
+      size: {height: 200},
+      data: {
+        columns: <%= raw(
+          @count_by_destination.to_a.slice(0, 3)
+            .push(['etc', @count_by_destination.values.slice(3..-1).try(:sum)])
+            .select {|_, v| v.present? }
+            .inspect
+        ) %>,
+        type : 'pie'
+      }
+    });
+  <% end %>
 <% end %>
 
-<%= javascript_tag do %>
-  c3.generate({
-    bindto: '#count_by_reason',
-    size: {height: 200},
-    data: {
-      columns: <%= raw @count_by_reason.to_a.inspect %>,
-      type : 'pie'
-    }
-  });
+<% if @count_by_reason.present? %>
+  <%= javascript_tag do %>
+    c3.generate({
+      bindto: '#count_by_reason',
+      size: {height: 200},
+      data: {
+        columns: <%= raw @count_by_reason.to_a.inspect %>,
+        type : 'pie'
+      }
+    });
+  <% end %>
 <% end %>
