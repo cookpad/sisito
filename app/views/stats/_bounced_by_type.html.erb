@@ -3,7 +3,7 @@
   Bounced by Type
 </div>
 
-<% columns = 6 %>
+<% columns = 4 %>
 <% @bounced_by_type.sort_by(&:first).each_slice(columns) do |chunk| %>
   <section>
     <% columns.times.map {|i| chunk[i] }.each do |reason, count_by_destination| %>
