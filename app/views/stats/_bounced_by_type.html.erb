@@ -3,10 +3,10 @@
   Bounced by Type
 </div>
 
-<% @bounced_by_type.sort_by(&:first).each_slice(3) do |chunk| %>
+<% @bounced_by_type.sort_by(&:first).each_slice(6) do |chunk| %>
   <section>
     <% 3.times.map {|i| chunk[i] }.each do |reason, count_by_destination| %>
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <% if reason.present? %>
           <%= content_tag(:div, nil, id: "bounced_by_#{reason}") %>
         <% end %>
