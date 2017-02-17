@@ -61,7 +61,12 @@
       bindto: '#count_by_reason',
       size: {height: 200},
       data: {
-        columns: <%= raw @count_by_reason.to_a.inspect %>,
+        columns: <%= raw(
+          @count_by_reason.to_a.slice(0, 3)
+            .push(['etc', @count_by_reason.values.slice(3..-1).try(:sum)])
+            .select {|_, v| v.present? }
+            .inspect
+        ) %>,
         type : 'pie'
       }
     });

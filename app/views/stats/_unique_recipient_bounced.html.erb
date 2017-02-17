@@ -65,7 +65,12 @@
   c3.generate({
     bindto: '#uniq_count_by_reason',
     data: {
-      columns: <%= raw @uniq_count_by_reason.to_a.inspect %>,
+      columns: <%= raw(
+        @uniq_count_by_reason.to_a.slice(0, 3)
+          .push(['etc', @uniq_count_by_reason.values.slice(3..-1).try(:sum)])
+          .select {|_, v| v.present? }
+          .inspect
+      ) %>,
       type : 'donut'
     },
     donut: {
@@ -78,7 +83,12 @@
   c3.generate({
     bindto: '#uniq_count_by_senderdomain',
     data: {
-      columns: <%= raw @uniq_count_by_senderdomain.to_a.inspect %>,
+      columns: <%= raw(
+        @uniq_count_by_senderdomain.to_a.slice(0, 3)
+          .push(['etc', @uniq_count_by_senderdomain.values.slice(3..-1).try(:sum)])
+          .select {|_, v| v.present? }
+          .inspect
+      ) %>,
       type : 'donut'
     },
     donut: {
