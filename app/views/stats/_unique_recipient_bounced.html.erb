@@ -4,6 +4,12 @@
 </div>
 
 <section>
+  <div class="col-sm-12">
+    <div id="uniq_count_by_date"></div>
+  </div>
+</section>
+
+<section>
   <div class="col-sm-4">
     <div id="uniq_count_by_destination"></div>
   </div>
@@ -14,6 +20,28 @@
     <div id="uniq_count_by_senderdomain"></div>
   </div>
 </section>
+
+<%= javascript_tag do %>
+  c3.generate({
+    bindto: '#uniq_count_by_date',
+    size: {height: 200},
+    data: {
+      x: 'x',
+      columns: [
+        ['x', <%= raw @uniq_count_by_date.keys.map {|i| i.strftime('%Y-%m-%d') }.map(&:inspect).join(?,) %>],
+        ['bounce mail count', <%= @uniq_count_by_date.values.join(?,) %>]
+      ],
+      type: 'bar'
+    },
+    legend: {show: false},
+    axis: {
+      x: {
+        type: 'timeseries',
+        tick: {format: '%-m/%d'}
+      }
+    }
+  });
+<% end %>
 
 <%= javascript_tag do %>
   c3.generate({
