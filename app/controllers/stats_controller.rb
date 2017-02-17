@@ -22,6 +22,7 @@ class StatsController < ApplicationController
     @count_by_reason = cache_if_production(:count_by_reason, expires_in: 5.minutes) do
       BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
                 .group(:reason).count
+                .sort_by(&:last).reverse.to_h
     end
 
     # Unique Recipient Bounced
@@ -42,10 +43,12 @@ class StatsController < ApplicationController
 
     @uniq_count_by_reason = cache_if_production(:uniq_count_by_reason, expires_in: 1.hour) do
       BounceMail.distinct.group(:reason).count(:recipient)
+                .sort_by(&:last).reverse.to_h
     end
 
     @uniq_count_by_senderdomain = cache_if_production(:uniq_count_by_senderdomain, expires_in: 1.hour) do
       BounceMail.distinct.group(:senderdomain).count(:recipient)
+                .sort_by(&:last).reverse.to_h
     end
 
     # Bounced by Type
