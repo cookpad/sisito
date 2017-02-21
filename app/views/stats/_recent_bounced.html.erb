@@ -4,6 +4,19 @@
 </div>
 
 <section>
+  <div class="col-sm-2">
+    <%= form_tag root_path, method: :get do %>
+      <%= select_tag :recent_days,
+            options_for_select(
+              StatsController::MAX_RECENT_DAYS.times.map(&:succ).reverse.map {|i| ["#{i} Days", i] },
+              selected: @recent_days),
+            class: 'form-control', onchange: 'this.form.submit()' %>
+    <% end %>
+  </div>
+  <div class="col-sm-10"></div>
+</section>
+
+<section>
   <div class="col-sm-6">
     <div id="count_by_date"></div>
   </div>

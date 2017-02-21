@@ -1,41 +1,33 @@
 class StatsController < ApplicationController
-  RECENT_DAYS = 14
+  MAX_RECENT_DAYS = 14
 
   def index
+    @recent_days = (params[:recent_days] || MAX_RECENT_DAYS).to_i
+
     # Recently Bounced
     @count_by_date = cache_if_production(:count_by_date, expires_in: 5.minutes) do
-      cbd = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
+      cbd = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:date)
                 .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
                 .sort_by(&:first).to_h
 
       today = Date.today
-      ((today - (RECENT_DAYS - 1).days)..today).map {|d| [d, cbd.fetch(d, 0)] }.to_h
+      ((today - (@recent_days - 1).days)..today).map {|d| [d, cbd.fetch(d, 0)] }.to_h
     end
 
     @count_by_destination = cache_if_production(:count_by_destination, expires_in: 5.minutes) do
-      BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
+      BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:destination).count
                 .sort_by(&:last).reverse.to_h
     end
 
     @count_by_reason = cache_if_production(:count_by_reason, expires_in: 5.minutes) do
-      BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
+      BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:reason).count
                 .sort_by(&:last).reverse.to_h
     end
 
-    # Unique Recipient bounced_by_type
-    @uniq_count_by_date = cache_if_production(:uniq_count_by_date, expires_in: 1.hour) do
-      ucbd = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
-                .group(:date)
-                .pluck('DATE(timestamp) AS date', 'COUNT(DISTINCT recipient) AS count')
-                .sort_by(&:first).to_h
-
-      today = Date.today
-      ((today - (RECENT_DAYS - 1).days)..today).map {|d| [d, ucbd.fetch(d, 0)] }.to_h
-    end
-
+    # Unique Recipient Bounced
     @uniq_count_by_destination = cache_if_production(:uniq_count_by_destination, expires_in: 1.hour) do
       BounceMail.distinct.group(:destination).count(:recipient)
                 .sort_by(&:last).reverse.to_h
