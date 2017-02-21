@@ -25,7 +25,7 @@ class StatsController < ApplicationController
                 .sort_by(&:last).reverse.to_h
     end
 
-    # Unique Recipient Bounced
+    # Unique Recipient bounced_by_type
     @uniq_count_by_date = cache_if_production(:uniq_count_by_date, expires_in: 1.hour) do
       ucbd = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
                 .group(:date)
