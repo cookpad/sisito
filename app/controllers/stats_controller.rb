@@ -5,7 +5,7 @@ class StatsController < ApplicationController
     @recent_days = (params[:recent_days] || MAX_RECENT_DAYS).to_i
 
     # Recently Bounced
-    @count_by_date = cache_if_production(:count_by_date, expires_in: 5.minutes) do
+    @count_by_date = cache_if_production("count_by_date_#{@recent_days}", expires_in: 5.minutes) do
       cbd = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:date)
                 .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
@@ -15,13 +15,13 @@ class StatsController < ApplicationController
       ((today - (@recent_days - 1).days)..today).map {|d| [d, cbd.fetch(d, 0)] }.to_h
     end
 
-    @count_by_destination = cache_if_production(:count_by_destination, expires_in: 5.minutes) do
+    @count_by_destination = cache_if_production("count_by_destination_#{@recent_days}", expires_in: 5.minutes) do
       BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:destination).count
                 .sort_by(&:last).reverse.to_h
     end
 
-    @count_by_reason = cache_if_production(:count_by_reason, expires_in: 5.minutes) do
+    @count_by_reason = cache_if_production("count_by_reason_#{@recent_days}", expires_in: 5.minutes) do
       BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:reason).count
                 .sort_by(&:last).reverse.to_h
