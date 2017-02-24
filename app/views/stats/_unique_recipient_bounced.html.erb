@@ -1,6 +1,8 @@
+<% uniq_recipient_count = @uniq_count_by_destination.values.sum %>
 <div class="page-header">
   <span class="glyphicon glyphicon-stats"></span>
   Unique Recipient Bounced
+  <span class="text-muted">(<%= uniq_recipient_count %> recipients)</span>
 </div>
 
 <section>
@@ -28,7 +30,7 @@
       type: 'donut'
     },
     donut: {
-      title: '<%= @uniq_count_by_destination.values.sum %> recipients',
+      title: '<%= uniq_recipient_count %> recipients',
     }
   });
 <% end %>
@@ -43,10 +45,7 @@
           .select {|_, v| v.present? }
           .inspect
       ) %>,
-      type : 'donut'
-    },
-    donut: {
-      title: '<%= @uniq_count_by_reason.values.sum %> recipients',
+      type : 'pie'
     }
   });
 <% end %>
@@ -61,10 +60,7 @@
           .select {|_, v| v.present? }
           .inspect
       ) %>,
-      type : 'donut'
-    },
-    donut: {
-      title: '<%= @uniq_count_by_senderdomain.values.sum %> recipients',
+      type : 'pie'
     }
   });
 <% end %>

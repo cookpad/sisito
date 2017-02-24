@@ -8,7 +8,7 @@
     <%= form_tag root_path, method: :get do %>
       <%= select_tag :recent_days,
             options_for_select(
-              StatsController::MAX_RECENT_DAYS.times.map(&:succ).reverse.map {|i| ["#{i} Days", i] },
+              StatsController::MAX_RECENT_DAYS.times.map(&:succ).reverse.map {|i| ["#{i} Day".send(i > 1 ? :pluralize : :singularize), i] },
               selected: @recent_days),
             class: 'form-control', onchange: 'this.form.submit()' %>
     <% end %>
