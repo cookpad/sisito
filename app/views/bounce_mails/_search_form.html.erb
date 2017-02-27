@@ -31,8 +31,8 @@
             <th>Recipient</th>
             <th class="tight">Destination</th>
             <th class="x-tight">Reason</th>
+            <th class="x-tight"></th>
             <% unless @mask %>
-              <th class="x-tight"></th>
               <th class="x-tight"></th>
             <% end %>
           </tr>
@@ -45,13 +45,13 @@
               <td><%= @mask ? bounce_mail.mask_recipient : bounce_mail.recipient %></td>
               <td><%= bounce_mail.senderdomain %></td>
               <td><%= bounce_mail.reason %></td>
+              <td>
+                <%= link_to bounce_mail_path(bounce_mail, digest: @mask ? nil : bounce_mail.digest) do %>
+                  <%= content_tag(:span, nil, class: 'glyphicon ' + (@mask ? 'glyphicon-lock' : 'glyphicon-search')) %>
+                  Show
+                <% end %>
+              </td>
               <% unless @mask %>
-                <td>
-                  <%= link_to bounce_mail_path(bounce_mail, digest: bounce_mail.digest) do %>
-                    <span class="glyphicon glyphicon-search"></span>
-                    Show
-                  <% end %>
-                </td>
                 <td>
                   <% if bounce_mail.whitelisted %>
                     <span class="label label-success">Whitelisted</span>

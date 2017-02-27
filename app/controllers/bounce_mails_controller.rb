@@ -55,7 +55,7 @@ class BounceMailsController < ApplicationController
 
   def show
     if @bounce_mail.digest != params[:digest]
-      render plain: '', status: :forbidden
+      authenticate
     end
 
     @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
@@ -71,5 +71,15 @@ class BounceMailsController < ApplicationController
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                              .group(:recipient, :senderdomain)
                              .find(params[:id])
+  end
+
+  def authenticate
+    sisito_config = Rails.application.config.sisito
+
+    authenticate_or_request_with_http_digest do |username|
+      if username == sisito_config.fetch(:admin).fetch(:username)
+        sisito_config.fetch(:admin).fetch(:password)
+      end
+    end
   end
 end
