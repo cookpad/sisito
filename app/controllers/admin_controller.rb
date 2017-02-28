@@ -3,6 +3,7 @@ require 'csv'
 class AdminController < ApplicationController
   BOUNCE_MAILS_COUNT_PER_PAGE = 10
   REPEAT_THRESHOLD = 5
+  RECENT_DAYS = 14
 
   before_action :authenticate
   before_action :set_bounce_mail, only: [:show, :destroy]
@@ -11,6 +12,8 @@ class AdminController < ApplicationController
     if cookies[:admin_query].present?
       redirect_to admin_search_path
     else
+      @repeated_bounced_reason = params[:repeated_bounced_reason]
+
       @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
                                 .joins('LEFT JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
@@ -19,24 +22,27 @@ class AdminController < ApplicationController
                                 .order(:recipient)
                                 .page(params[:page]).per(BOUNCE_MAILS_COUNT_PER_PAGE)
 
-      @repeated_bounced_reason = params[:repeated_bounced_reason]
-      repeated_bounce_mails_where = {'whitelist_mails.recipient' => nil}
-      repeated_bounce_mails_where[:reason] = @repeated_bounced_reason if @repeated_bounced_reason.present?
-
       @repeated_bounce_mails = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.recipient AS whitelisted')
                                          .joins('LEFT JOIN whitelist_mails' +
                                                 '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                                 ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                                         .where(repeated_bounce_mails_where)
-                                         .group(:recipient, :senderdomain)
-                                         .having('count >= ?', REPEAT_THRESHOLD)
-                                         .sort_by {|i| -i.count }
+                                         .where('whitelist_mails.recipient' => nil)
+                                         .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
+
+      if @repeated_bounced_reason
+        @repeated_bounce_mails = @repeated_bounce_mails.where(reason: @repeated_bounced_reason)
+      end
+
+      @repeated_bounce_mails = @repeated_bounce_mails.group(:recipient, :senderdomain)
+                                                     .having('count >= ?', REPEAT_THRESHOLD)
+                                                     .sort_by {|i| -i.count }
 
       @bounce_overs = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
                                 .joins('INNER JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain' +
                                        ' AND bounce_mails.timestamp > whitelist_mails.created_at')
+                                .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
                                 .group(:recipient, :senderdomain)
                                 .order(:recipient)
     end
