@@ -1,6 +1,9 @@
 require 'csv'
 
 class AdminController < ApplicationController
+  BOUNCE_MAILS_COUNT_PER_PAGE = 10
+  REPEAT_THRESHOLD = 5
+
   before_action :authenticate
   before_action :set_bounce_mail, only: [:show, :destroy]
 
@@ -14,7 +17,24 @@ class AdminController < ApplicationController
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                                 .group(:recipient, :senderdomain)
                                 .order(:recipient)
-                                .page(params[:page])
+                                .page(params[:page]).per(BOUNCE_MAILS_COUNT_PER_PAGE)
+
+      @repeated_bounce_mails = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.recipient AS whitelisted')
+                                         .joins('LEFT JOIN whitelist_mails' +
+                                                '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                                ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                                         .where('whitelist_mails.recipient' => nil)
+                                         .group(:recipient, :senderdomain)
+                                         .having('count >= ?', REPEAT_THRESHOLD)
+                                         .order(:recipient)
+
+      @bounce_overs = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+                                .joins('INNER JOIN whitelist_mails' +
+                                       '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                       ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain' +
+                                       ' AND bounce_mails.timestamp > whitelist_mails.created_at')
+                                .group(:recipient, :senderdomain)
+                                .order(:recipient)
     end
   end
 

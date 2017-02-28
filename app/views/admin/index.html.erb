@@ -1,6 +1,9 @@
-<div class="page-header">
-  <span class="glyphicon glyphicon-envelope"></span>
-  <strong>All Bounce Mails</strong>
-</div>
-
 <%= render 'search_form' %>
+
+<% if @repeated_bounce_mails.present? %>
+  <%= render 'repeated_bounced' %>
+<% end %>
+
+<% if @bounce_overs.present? %>
+  <%= render 'bounce_over' %>
+<% end %>
