@@ -8,6 +8,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th class="x-tight">Count</th>
           <th>Recipient</th>
           <th>Destination</th>
           <th class="x-tight"></th>
@@ -19,6 +20,7 @@
       <tbody>
         <% @repeated_bounce_mails.slice(0, 10).each do |bounce_mail| %>
           <tr>
+            <td><%= bounce_mail.count %></td>
             <td><%= bounce_mail.recipient %></td>
             <td><%= bounce_mail.senderdomain %></td>
             <td>
