@@ -1,5 +1,5 @@
 <div class="page-header">
-  <strong><%= @bounce_mail.recipient %></strong>
+  <strong><%= mail_link @bounce_mail %></strong>
   <span class="text-muted">(<%= @bounce_mail.digest %>)</span>
   <% if @bounce_mail.whitelisted %>
     <span class="label label-success">Whitelisted</span>
