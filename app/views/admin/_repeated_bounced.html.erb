@@ -17,7 +17,7 @@
       </thead>
 
       <tbody>
-        <% @repeated_bounce_mails.each do |bounce_mail| %>
+        <% @repeated_bounce_mails.slice(0, 10).each do |bounce_mail| %>
           <tr>
             <td><%= bounce_mail.recipient %></td>
             <td><%= bounce_mail.senderdomain %></td>

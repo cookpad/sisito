@@ -26,7 +26,7 @@ class AdminController < ApplicationController
                                          .where('whitelist_mails.recipient' => nil)
                                          .group(:recipient, :senderdomain)
                                          .having('count >= ?', REPEAT_THRESHOLD)
-                                         .order(:recipient)
+                                         .sort_by {|i| -i.count }
 
       @bounce_overs = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
                                 .joins('INNER JOIN whitelist_mails' +
