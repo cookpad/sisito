@@ -1,56 +1,76 @@
-<div class="page-header">
+<div id="repeated_bounced" class="page-header">
   <span class="glyphicon glyphicon-warning-sign"></span>
   <strong>Repeated Bounced</strong>
 </div>
 
 <section>
-  <div class="col-sm-12">
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="x-tight">Count</th>
-          <th>Recipient</th>
-          <th>Destination</th>
-          <th class="x-tight"></th>
-          <th class="x-tight"></th>
-          <th class="x-tight"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @repeated_bounce_mails.slice(0, 10).each do |bounce_mail| %>
-          <tr>
-            <td><%= bounce_mail.count %></td>
-            <td><%= bounce_mail.recipient %></td>
-            <td><%= bounce_mail.senderdomain %></td>
-            <td>
-              <%= link_to admin_path(bounce_mail) do %>
-                <span class="glyphicon glyphicon-search"></span>
-                Show
-              <% end %>
-            </td>
-            <td>
-              <% if bounce_mail.whitelisted %>
-                <span class="label label-success">Whitelisted</span>
-              <% else %>
-                <%= link_to whitelist_mails_register_path(
-                      'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain,
-                      return_to: current_page?(admin_search_path) ? admin_search_path : admin_index_path(page: params[:page])),
-                      method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
-                  <span class="glyphicon glyphicon-check"></span>
-                  Whitelist
-                <% end %>
-              <% end %>
-            </td>
-            <td>
-              <%= link_to admin_path(bounce_mail), method: :delete, data: { confirm: "Are you sure to delete '#{bounce_mail.recipient} from bounce list?" } do %>
-                <span class="glyphicon glyphicon-remove"></span>
-                Destroy
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="col-sm-10"></div>
+  <div class="col-sm-2">
+    <%= form_tag admin_index_path + '#repeated_bounced', method: :get do %>
+      <%= select_tag :repeated_bounced_reason,
+            options_for_select([''] + Rails.application.config.sisimai[:reasons], selected: @repeated_bounced_reason),
+            class: 'form-control', onchange: 'this.form.submit()' %>
+    <% end %>
   </div>
 </section>
+
+<% if @repeated_bounce_mails.present? %>
+  <section>
+    <div class="col-sm-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="x-tight">Count</th>
+            <th>Recipient</th>
+            <th>Destination</th>
+            <th class="x-tight"></th>
+            <th class="x-tight"></th>
+            <th class="x-tight"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @repeated_bounce_mails.slice(0, 10).each do |bounce_mail| %>
+            <tr>
+              <td><%= bounce_mail.count %></td>
+              <td><%= bounce_mail.recipient %></td>
+              <td><%= bounce_mail.senderdomain %></td>
+              <td>
+                <%= link_to admin_path(bounce_mail) do %>
+                  <span class="glyphicon glyphicon-search"></span>
+                  Show
+                <% end %>
+              </td>
+              <td>
+                <% if bounce_mail.whitelisted %>
+                  <span class="label label-success">Whitelisted</span>
+                <% else %>
+                  <%= link_to whitelist_mails_register_path(
+                        'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain,
+                        return_to: current_page?(admin_search_path) ? admin_search_path : admin_index_path(page: params[:page])),
+                        method: :post, data: { confirm: "Are you sure you want to register '#{bounce_mail.recipient}' to whitelist?" } do %>
+                    <span class="glyphicon glyphicon-check"></span>
+                    Whitelist
+                  <% end %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to admin_path(bounce_mail), method: :delete, data: { confirm: "Are you sure to delete '#{bounce_mail.recipient} from bounce list?" } do %>
+                  <span class="glyphicon glyphicon-remove"></span>
+                  Destroy
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+<% else %>
+  <section>
+    <div class="col-sm-12">
+      <span class="glyphicon glyphicon-thumbs-up"></span>
+      Not found
+    </div>
+  </section>
+<% end %>
