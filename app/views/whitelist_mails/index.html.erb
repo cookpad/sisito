@@ -19,6 +19,7 @@
           <th class="x-tight">CreatedAt</th>
           <th class="tight">LatestBounced</th>
           <th class="x-tight"></th>
+          <th class="x-tight"></th>
         </tr>
       </thead>
 
@@ -34,6 +35,12 @@
                 <% if whitelist_mail.max_bounce_mail_timestamp > whitelist_mail.created_at %>
                   <span class="label label-warning">Bounce over</span>
                 <% end %>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to whitelist_mail_path(whitelist_mail) do %>
+                <span class="glyphicon glyphicon-search"></span>
+                Show
               <% end %>
             </td>
             <td>

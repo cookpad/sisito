@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   post 'whitelist_mails/register', to: 'whitelist_mails#register'
   post 'whitelist_mails/deregister', to: 'whitelist_mails#deregister'
-  resources :whitelist_mails, only: [:index, :new, :create, :destroy]
+  resources :whitelist_mails, only: [:index, :new, :create, :destroy, :show]
 
   get 'admin/download', to: 'admin#download'
   match 'admin/search', to: 'admin#search', via: [:get, :post]

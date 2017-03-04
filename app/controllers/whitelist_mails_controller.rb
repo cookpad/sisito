@@ -1,5 +1,5 @@
 class WhitelistMailsController < ApplicationController
-  before_action :set_whitelist_mail, only: [:destroy]
+  before_action :set_whitelist_mail, only: [:destroy, :show]
 
   def index
     @whitelist_mails = WhitelistMail.select('whitelist_mails.*', 'MAX(bounce_mails.timestamp) AS max_bounce_mail_timestamp')
@@ -23,6 +23,14 @@ class WhitelistMailsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    bounce_mail_id = BounceMail.where(recipient: @whitelist_mail.recipient).maximum(:id)
+    @bounce_mail = BounceMail.find(bounce_mail_id)
+
+    @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
+                         .order(timestamp: :desc)
   end
 
   def register

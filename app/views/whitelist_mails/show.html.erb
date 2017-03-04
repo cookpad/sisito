@@ -1,0 +1,52 @@
+<div class="page-header">
+  <strong><%= mail_link @bounce_mail %></strong>
+  <span class="text-muted">(<%= @bounce_mail.digest %>)</span>
+  <span class="label label-success">Whitelisted</span>
+</div>
+
+<section>
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="tight">Timestamp</th>
+          <th class="x-tight">Reason</th>
+          <th class="tight">Senderdomain</th>
+          <th>Subject</th>
+          <th>Diagnosticcode</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @history.each do |bounce_mail| %>
+          <tr>
+            <td>
+              <%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %>
+              <% if bounce_mail.timestamp > @whitelist_mail.created_at %>
+                <span class="label label-warning">Bounce over</span>
+              <% end %>
+            </td>
+            <td><%= bounce_mail.reason %></td>
+            <td><%= bounce_mail.senderdomain %></td>
+            <td><%= bounce_mail.subject %></td>
+            <td><%= bounce_mail.diagnosticcode %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
+    <%= link_to whitelist_mails_path do %>
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      Back
+    <% end %>
+    &nbsp;
+    <%= link_to @whitelist_mail, method: :delete, data: { confirm: "Are you sure to delete '#{@whitelist_mail.recipient} from white list?" } do %>
+      <span class="glyphicon glyphicon-remove"></span>
+      Destroy
+    <% end %>
+  </div>
+</section>
