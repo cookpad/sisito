@@ -2,6 +2,10 @@
   <strong><%= mail_link @bounce_mail %></strong>
   <span class="text-muted">(<%= @bounce_mail.digest %>)</span>
   <span class="label label-success">Whitelisted</span>
+  <br>
+  <span class="small">
+    created_at: <%= @whitelist_mail.created_at.strftime('%-m/%-d %-H:%M') %>
+  </span>
 </div>
 
 <section>
