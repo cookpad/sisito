@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   end
 
   def failure
-    render text: '401 Unauthorized', status: :unauthorized
+    render plain: '401 Unauthorized', status: :unauthorized
   end
 
   def authenticate?

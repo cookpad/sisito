@@ -14,5 +14,7 @@ header_links:
 #bounce_over:
 #  buffer: 0
 #omniauth:
-#  google_client_id: ~
-#  google_client_secret: ~
+  #google_client_id: ~
+  #google_client_secret: ~
+  #hd:
+  #  - example.com
