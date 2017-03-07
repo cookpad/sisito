@@ -1,30 +1,30 @@
 <%# add navigation links to this file %>
 <li>
-  <%= link_to root_path do %>
+  <%= link_to root_path, class: current_top_path?(root_path) ? 'color-white' : '' do %>
     <span class="glyphicon glyphicon-stats"></span>
     Statistics
   <% end %>
 </li>
 <li>
-  <%= link_to bounce_mails_path do %>
+  <%= link_to bounce_mails_path, class: current_top_path?(bounce_mails_path) ? 'color-white' : '' do %>
     <span class="glyphicon glyphicon-envelope"></span>
     Bounce Mails
   <% end %>
 </li>
 <li>
-  <%= link_to whitelist_mails_path do %>
+  <%= link_to whitelist_mails_path, class: current_top_path?(whitelist_mails_path) ? 'color-white' : '' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
     Whitelist Mails
   <% end %>
 </li>
 <li>
-  <%= link_to sender_path do %>
+  <%= link_to sender_path, class: current_top_path?(sender_path) ? 'color-white' : '' do %>
     <span class="glyphicon glyphicon-pencil"></span>
     Confirmation Mail
   <% end %>
 </li>
 <li>
-  <%= link_to admin_index_path do %>
+  <%= link_to admin_index_path, class: current_top_path?(admin_index_path) ? 'color-white' : '' do %>
     <span class="glyphicon glyphicon-wrench"></span>
     Admin
   <% end %>

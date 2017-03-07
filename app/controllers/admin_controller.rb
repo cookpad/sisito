@@ -14,7 +14,7 @@ class AdminController < ApplicationController
     else
       @repeated_bounced_reason = params[:repeated_bounced_reason]
 
-      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted')
                                 .joins('LEFT JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
@@ -23,7 +23,7 @@ class AdminController < ApplicationController
                                 .page(params[:page]).per(BOUNCE_MAILS_COUNT_PER_PAGE)
 
       @repeated_bounce_mails = cache_if_production(:repeated_bounce_mails, expires_in: 10.minutes) do
-        rbm = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.recipient AS whitelisted')
+        rbm = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.id AS whitelisted')
                         .joins('LEFT JOIN whitelist_mails' +
                                '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
@@ -42,7 +42,7 @@ class AdminController < ApplicationController
       @bounce_overs = cache_if_production(:bounce_overs, expires_in: 10.minutes) do
         bounce_over_buf = Rails.application.config.sisito.dig(:bounce_over, :buffer) || 0
 
-        BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+        BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted')
                   .joins('INNER JOIN whitelist_mails' +
                          '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                          ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain' +
@@ -64,7 +64,7 @@ class AdminController < ApplicationController
     else
       cookies[:admin_query] = @query
 
-      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted')
                                 .joins('LEFT JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
@@ -119,7 +119,7 @@ class AdminController < ApplicationController
   end
 
   def set_bounce_mail
-    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
+    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
                              .joins('LEFT JOIN whitelist_mails' +
                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')

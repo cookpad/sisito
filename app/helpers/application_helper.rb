@@ -13,4 +13,8 @@ module ApplicationHelper
     bounce_mail_timestamp.present? and
     bounce_mail_timestamp > (whitelist_mail_created_at + buf)
   end
+
+  def current_top_path?(path)
+    path.split('/')[1] ==    url_for(request.params).split('/')[1]
+  end
 end

@@ -30,7 +30,7 @@ class BounceMailsController < ApplicationController
         {recipient: recipients, digest: digests}.each {|k, v|
           if v.present?
             @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason, :digest,
-                                               'whitelist_mails.recipient AS whitelisted')
+                                               'whitelist_mails.id AS whitelisted')
                                        .joins('LEFT JOIN whitelist_mails' +
                                               '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                               ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
@@ -65,7 +65,7 @@ class BounceMailsController < ApplicationController
   private
 
   def set_bounce_mail
-    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
+    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
                              .joins('LEFT JOIN whitelist_mails' +
                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
