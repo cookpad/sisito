@@ -22,31 +22,35 @@ class AdminController < ApplicationController
                                 .order(:recipient)
                                 .page(params[:page]).per(BOUNCE_MAILS_COUNT_PER_PAGE)
 
-      @repeated_bounce_mails = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.recipient AS whitelisted')
-                                         .joins('LEFT JOIN whitelist_mails' +
-                                                '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
-                                                ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                                         .where('whitelist_mails.recipient' => nil)
-                                         .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
+      @repeated_bounce_mails = cache_if_production(:repeated_bounce_mails, expires_in: 10.minutes) do
+        rbm = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.recipient AS whitelisted')
+                        .joins('LEFT JOIN whitelist_mails' +
+                               '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                               ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                        .where('whitelist_mails.recipient' => nil)
+                        .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
 
-      if @repeated_bounced_reason
-        @repeated_bounce_mails = @repeated_bounce_mails.where(reason: @repeated_bounced_reason)
+        if @repeated_bounced_reason
+          rbm = rbm.where(reason: @repeated_bounced_reason)
+        end
+
+        rbm.group(:recipient, :senderdomain)
+           .having('count >= ?', REPEAT_THRESHOLD)
+           .sort_by {|i| -i.count }
       end
 
-      @repeated_bounce_mails = @repeated_bounce_mails.group(:recipient, :senderdomain)
-                                                     .having('count >= ?', REPEAT_THRESHOLD)
-                                                     .sort_by {|i| -i.count }
+      @bounce_overs = cache_if_production(:bounce_overs, expires_in: 10.minutes) do
+        bounce_over_buf = Rails.application.config.sisito.dig(:bounce_over, :buffer) || 0
 
-      bounce_over_buf = Rails.application.config.sisito.dig(:bounce_over, :buffer) || 0
-
-      @bounce_overs = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
-                                .joins('INNER JOIN whitelist_mails' +
-                                       '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
-                                       ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain' +
-                                       " AND bounce_mails.timestamp > (whitelist_mails.created_at + INTERVAL #{bounce_over_buf} SECOND)")
-                                .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
-                                .group(:recipient, :senderdomain)
-                                .order(:recipient)
+        BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
+                  .joins('INNER JOIN whitelist_mails' +
+                         '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                         ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain' +
+                         " AND bounce_mails.timestamp > (whitelist_mails.created_at + INTERVAL #{bounce_over_buf} SECOND)")
+                  .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
+                  .group(:recipient, :senderdomain)
+                  .order(:recipient)
+      end
     end
   end
 
@@ -120,5 +124,15 @@ class AdminController < ApplicationController
                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                              .find(params[:id])
+  end
+
+  def cache_if_production(key, options = {}, &block)
+    if Rails.env.production?
+      Rails.cache.fetch(key, options) do
+        yield
+      end
+    else
+      yield
+    end
   end
 end
