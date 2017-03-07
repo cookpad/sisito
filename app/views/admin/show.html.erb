@@ -66,5 +66,10 @@
       <span class="glyphicon glyphicon-remove"></span>
       Destroy
     <% end %>
+    &nbsp;
+    <%= link_to sender_path(from: @bounce_mail.addresser, to: @bounce_mail.recipient) do %>
+      <span class="glyphicon glyphicon-envelope"></span>
+      Confirm
+    <% end %>
   </div>
 </section>

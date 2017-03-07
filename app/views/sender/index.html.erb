@@ -15,7 +15,7 @@
     <%= form_for @confirmation_mail, url: sender_path do |f| %>
       <div class="form-group">
         <%= f.label :from, class: 'control-label' %>
-        <%= f.select :from, options_for_select(@select_from_options), {}, class: 'form-control' %>
+        <%= f.select :from, options_for_select(@select_from_options), @from ? {selected: @from} : {}, class: 'form-control' %>
       </div>
 
       <div class="form-group">

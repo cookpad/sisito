@@ -3,6 +3,8 @@ class SenderController < ApplicationController
 
   def index
     @confirmation_mail = ConfirmationMail.new
+    @confirmation_mail.from = params[:from]
+    @confirmation_mail.to = params[:to]
   end
 
   def create
