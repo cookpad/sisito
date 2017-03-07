@@ -7,6 +7,7 @@ class SenderController < ApplicationController
     @confirmation_mail.to = params[:to]
   end
 
+  require 'net/smtp'
   def create
     @confirmation_mail = ConfirmationMail.new(confirmation_mail_params)
 
@@ -18,8 +19,8 @@ class SenderController < ApplicationController
       render :index
     end
   rescue Net::SMTPError => e
-    @error = e
-    render :error
+    flash[:error] = e.message
+    render :index
   end
 
   def sent
