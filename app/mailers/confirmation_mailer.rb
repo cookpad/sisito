@@ -1,7 +1,6 @@
 class ConfirmationMailer < ApplicationMailer
   def email(confirmation_mail)
-    options = Rails.application.config.sisito.fetch(:smtp).fetch(confirmation_mail.from)
-    delivery_options = {address: options.fetch(:host), port: options.fetch(:port)}
+    delivery_options = Rails.application.config.sisito.fetch(:smtp).fetch(confirmation_mail.from)
 
     mail(from: confirmation_mail.from,
          to: confirmation_mail.to,
