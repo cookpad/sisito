@@ -19,10 +19,10 @@ class AdminController < ApplicationController
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                                 .group(:recipient, :senderdomain)
-                                .order(:timestamp)
+                                .order(timestamp: :desc)
                                 .page(params[:page]).per(BOUNCE_MAILS_COUNT_PER_PAGE)
 
-      @repeated_bounce_mails = cache_if_production(:repeated_bounce_mails, expires_in: 10.minutes) do
+      @repeated_bounce_mails = cache_if_production(:admin_repeated_bounce_mails, expires_in: 10.minutes) do
         rbm = BounceMail.select('bounce_mails.*', 'COUNT(*) AS count', 'whitelist_mails.id AS whitelisted')
                         .joins('LEFT JOIN whitelist_mails' +
                                '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
@@ -39,7 +39,7 @@ class AdminController < ApplicationController
            .sort_by {|i| -i.count }
       end
 
-      @bounce_overs = cache_if_production(:bounce_overs, expires_in: 10.minutes) do
+      @bounce_overs = cache_if_production(:admin_bounce_overs, expires_in: 10.minutes) do
         bounce_over_buf = Rails.application.config.sisito.dig(:bounce_over, :buffer) || 0
 
         BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted')
