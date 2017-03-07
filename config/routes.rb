@@ -15,4 +15,8 @@ Rails.application.routes.draw do
   get 'sender', to: 'sender#index'
   post 'sender', to: 'sender#create'
   get 'sent', to: 'sender#sent'
+
+  get  'auth/:provider/callback', to: 'sessions#callback'
+  post 'auth/:provider/callback' , to: 'sessions#callback'
+  get  'auth/failure', to: 'sessions#failure'
 end

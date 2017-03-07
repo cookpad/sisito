@@ -13,3 +13,6 @@ header_links:
   "Example Domain": http://example.com/
 #bounce_over:
 #  buffer: 0
+#omniauth:
+#  google_client_id: ~
+#  google_client_secret: ~

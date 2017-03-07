@@ -34,3 +34,6 @@ gem 'c3-rails'
 gem 'kaminari'
 gem 'clipboard-rails'
 gem 'rack-health'
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
