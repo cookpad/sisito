@@ -1,3 +1,6 @@
 <%= render 'search_form' %>
-<%= render 'repeated_bounced' %>
-<%= render 'bounce_over' %>
+
+<% if @query.blank? %>
+  <%= render 'repeated_bounced' %>
+  <%= render 'bounce_over' %>
+<% end %>
