@@ -14,12 +14,12 @@ class AdminController < ApplicationController
     else
       @repeated_bounced_reason = params[:repeated_bounced_reason]
 
-      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted')
+      @bounce_mails = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted', 'MAX(timestamp) AS timestamp')
                                 .joins('LEFT JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                                 .group(:recipient, :senderdomain)
-                                .order(:recipient)
+                                .order(:timestamp)
                                 .page(params[:page]).per(BOUNCE_MAILS_COUNT_PER_PAGE)
 
       @repeated_bounce_mails = cache_if_production(:repeated_bounce_mails, expires_in: 10.minutes) do

@@ -27,6 +27,7 @@
       <table class="table">
         <thead>
           <tr>
+            <th class="x-tight">Timestamp</th>
             <th>Recipient</th>
             <th>Destination</th>
             <th class="x-tight"></th>
@@ -38,6 +39,7 @@
         <tbody>
           <% @bounce_mails.each do |bounce_mail| %>
             <tr>
+              <td><%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %></td>
               <td><%= bounce_mail.recipient %></td>
               <td><%= bounce_mail.senderdomain %></td>
               <td>
