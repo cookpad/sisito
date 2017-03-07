@@ -19,7 +19,7 @@ class SenderController < ApplicationController
       render :index
     end
   rescue Net::SMTPError => e
-    flash[:error] = e.message
+    flash.now[:error] = e.message
     render :index
   end
 
