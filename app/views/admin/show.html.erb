@@ -24,7 +24,7 @@
           <tr>
             <td>
               <%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %>
-              <% if @bounce_mail.max_whitelist_mail_created_at.present? and bounce_mail.timestamp > @bounce_mail.max_whitelist_mail_created_at %>
+              <% if bounce_over?(@bounce_mail.max_whitelist_mail_created_at, bounce_mail.timestamp) %>
                 <span class="label label-warning">Bounce over</span>
               <% end %>
             </td>

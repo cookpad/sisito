@@ -37,11 +37,13 @@ class AdminController < ApplicationController
                                                      .having('count >= ?', REPEAT_THRESHOLD)
                                                      .sort_by {|i| -i.count }
 
+      bounce_over_buf = Rails.application.config.sisito.dig(:bounce_over, :buffer) || 0
+
       @bounce_overs = BounceMail.select('bounce_mails.*', 'whitelist_mails.recipient AS whitelisted')
                                 .joins('INNER JOIN whitelist_mails' +
                                        '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                        ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain' +
-                                       ' AND bounce_mails.timestamp > whitelist_mails.created_at')
+                                       " AND bounce_mails.timestamp > (whitelist_mails.created_at + INTERVAL #{bounce_over_buf} SECOND)")
                                 .where('timestamp >= NOW() - INTERVAL ? DAY', RECENT_DAYS)
                                 .group(:recipient, :senderdomain)
                                 .order(:recipient)
