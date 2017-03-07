@@ -71,6 +71,10 @@ class BounceMailsController < ApplicationController
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                              .group(:recipient, :senderdomain)
                              .find(params[:id])
+
+    if @bounce_mail.whitelisted
+      @whitelist_mail = WhitelistMail.find(@bounce_mail.whitelisted)
+    end
   end
 
   def authenticate

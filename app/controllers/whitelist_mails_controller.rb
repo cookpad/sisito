@@ -1,6 +1,10 @@
 class WhitelistMailsController < ApplicationController
   before_action :set_whitelist_mail, only: [:destroy, :show]
 
+  if Rails.application.config.sisito[:whitelist_auth]
+    before_action :authenticate, except: [:register, :deregister]
+  end
+
   def index
     @whitelist_mails = WhitelistMail.select('whitelist_mails.*', 'MAX(bounce_mails.timestamp) AS max_bounce_mail_timestamp')
                                 .joins('LEFT JOIN bounce_mails' +
@@ -74,5 +78,15 @@ class WhitelistMailsController < ApplicationController
 
   def whitelist_mail_params
     params.require(:whitelist_mail).permit(:recipient, :senderdomain)
+  end
+
+  def authenticate
+    sisito_config = Rails.application.config.sisito
+
+    authenticate_or_request_with_http_digest do |username|
+      if username == sisito_config.fetch(:admin).fetch(:username)
+        sisito_config.fetch(:admin).fetch(:password)
+      end
+    end
   end
 end

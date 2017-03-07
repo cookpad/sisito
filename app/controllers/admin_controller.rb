@@ -124,6 +124,10 @@ class AdminController < ApplicationController
                                     '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                     ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
                              .find(params[:id])
+
+    if @bounce_mail.whitelisted
+      @whitelist_mail = WhitelistMail.find(@bounce_mail.whitelisted)
+    end
   end
 
   def cache_if_production(key, options = {}, &block)

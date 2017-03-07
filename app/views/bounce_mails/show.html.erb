@@ -1,10 +1,14 @@
 <div class="page-header">
   <strong><%= mail_link @bounce_mail %></strong>
   <span class="text-muted">(<%= @bounce_mail.digest %>)</span>
-  <% if @bounce_mail.whitelisted %>
-    <%= link_to whitelist_mail_path(@bounce_mail.whitelisted) do %>
+  <% if @whitelist_mail %>
+    <%= link_to whitelist_mail_path(@whitelist_mail.id) do %>
       <span class="label label-success">Whitelisted</span>
     <% end %>
+    <br>
+    <span class="small">
+      whitelisted_at: <%= @whitelist_mail.created_at.strftime('%-m/%-d %-H:%M') %>
+    </span>
   <% end %>
 </div>
 
