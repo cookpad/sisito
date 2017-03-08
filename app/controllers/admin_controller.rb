@@ -5,7 +5,10 @@ class AdminController < ApplicationController
   REPEAT_THRESHOLD = 5
   RECENT_DAYS = 14
 
-  before_action :authenticate
+  unless Rails.application.config.sisito.dig(:authz, :show_admin)
+    before_action :authenticate
+  end
+
   before_action :set_bounce_mail, only: [:show, :destroy]
 
   def index

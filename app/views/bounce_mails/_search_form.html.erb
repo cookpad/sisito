@@ -71,7 +71,7 @@
       </table>
     </div>
   </section>
-  <% if @mask %>
+  <% unless @query %>
     <section class="disable-margin-top">
       <div class="col-sm-12 text-center">
         <%= paginate @bounce_mails %>
