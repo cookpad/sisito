@@ -5,7 +5,7 @@ class AdminController < ApplicationController
   REPEAT_THRESHOLD = 5
   RECENT_DAYS = 14
 
-  unless Rails.application.config.sisito.dig(:authz, :show_admin)
+  unless Rails.application.config.sisito.fetch(:authz).fetch(:show_admin)
     before_action :authenticate
   end
 

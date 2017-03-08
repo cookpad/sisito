@@ -38,12 +38,11 @@ class BounceMailsController < ApplicationController
           end
         }
       else
-        @bounce_mails = BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason, :digest,
+        @bounce_mails = BounceMail.select(:id, :timestamp, :recipient, :senderdomain, :reason, :digest,
                                                'whitelist_mails.id AS whitelisted')
                                   .joins('LEFT JOIN whitelist_mails' +
                                          '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
                                          ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                                  .group(:recipient, :senderdomain)
 
         if params[:reason].present?
           @reason = params[:reason]
@@ -51,7 +50,7 @@ class BounceMailsController < ApplicationController
         end
 
         @bounce_mails = @bounce_mails.order(timestamp: :desc).page(params[:page])
-        @mask = !Rails.application.config.sisito.dig(:authz, :disable_mask)
+        @mask = !Rails.application.config.sisito.fetch(:authz).fetch(:disable_mask)
       end
     end
   end
