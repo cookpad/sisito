@@ -21,3 +21,6 @@ header_links:
 #  google_client_secret: ~
 #  hd:
 #    - example.com
+#  allow_users:
+#    - foo@example.com
+#    - bar@example.com
