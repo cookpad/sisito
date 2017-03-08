@@ -1,7 +1,7 @@
 class WhitelistMailsController < ApplicationController
   before_action :set_whitelist_mail, only: [:destroy, :show]
 
-  if Rails.application.config.sisito[:whitelist_auth]
+  if Rails.application.config.sisito.dig(:auth, :whitelist)
     before_action :authenticate, except: [:register, :deregister]
   end
 

@@ -1,7 +1,8 @@
 admin:
   username: admin
   password: pass
-whitelist_auth: true
+auth:
+  whitelist: false
 smtp:
   foo@example.com:
     address: localhost
