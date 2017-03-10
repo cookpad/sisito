@@ -73,13 +73,11 @@
       </table>
     </div>
   </section>
-  <% if @query.blank? %>
-    <section class="disable-margin-top">
-      <div class="col-sm-12 text-center">
-        <%= paginate @bounce_mails, action: :index, to: admin_index_path %>
-      </div>
-    </section>
-  <% end %>
+  <section class="disable-margin-top">
+    <div class="col-sm-12 text-center">
+      <%= paginate @bounce_mails, action: :index, to: admin_index_path %>
+    </div>
+  </section>
 <% elsif @query.present? %>
   <section>
     <div class="col-sm-12">
