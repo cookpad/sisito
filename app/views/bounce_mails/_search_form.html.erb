@@ -29,6 +29,7 @@
           <tr>
             <th class="x-tight">Timestamp</th>
             <th>Recipient</th>
+            <th>Subject</th>
             <th class="tight">Senderdomain</th>
             <th class="x-tight">Reason</th>
             <th class="x-tight"></th>
@@ -43,6 +44,7 @@
             <tr>
               <td><%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %></td>
               <td><%= @mask ? bounce_mail.mask_recipient : bounce_mail.recipient %></td>
+              <td><%= bounce_mail.subject %></td>
               <td><%= bounce_mail.senderdomain %></td>
               <td><%= bounce_mail.reason %></td>
               <td>
