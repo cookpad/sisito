@@ -14,6 +14,7 @@ digest: sha1
 #mail_link: "https://localhost:9200/_plugin/kibana/#/discover?_a=(index:'maillog-*',query:(query_string:(query:'digest:%{digest}')))"
 header_links:
   "Example Domain": http://example.com/
+  "Bounce Reason": http://libsisimai.org/en/reason/
 #bounce_over:
 #  buffer: 0
 #omniauth:
