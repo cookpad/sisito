@@ -17,6 +17,8 @@ development:
   username: root
   password: 
   host: localhost
+  variables:
+    sql_mode: TRADITIONAL
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -30,6 +32,8 @@ test:
   username: root
   password: 
   host: localhost
+  variables:
+    sql_mode: TRADITIONAL
 
 production:
   adapter: mysql2
@@ -40,3 +44,5 @@ production:
   username: root
   password: 
   host: localhost
+  variables:
+    sql_mode: TRADITIONAL
