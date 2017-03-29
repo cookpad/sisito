@@ -22,7 +22,7 @@
           <tr>
             <th class="x-tight">Count</th>
             <th>Recipient</th>
-            <th>Senderdomain</th>
+            <th>Addresser</th>
             <th class="x-tight"></th>
             <th class="x-tight"></th>
             <th class="x-tight"></th>
@@ -34,7 +34,7 @@
             <tr>
               <td><%= bounce_mail.count %></td>
               <td><%= bounce_mail.recipient %></td>
-              <td><%= bounce_mail.senderdomain %></td>
+              <td><%= bounce_mail.addresser %></td>
               <td>
                 <%= link_to admin_path(bounce_mail) do %>
                   <span class="glyphicon glyphicon-search"></span>

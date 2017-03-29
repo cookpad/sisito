@@ -10,7 +10,7 @@
         <thead>
           <tr>
             <th>Recipient</th>
-            <th>Senderdomain</th>
+            <th>Addresser</th>
             <th class="x-tight"></th>
             <th class="x-tight"></th>
             <th class="x-tight"></th>
@@ -21,7 +21,7 @@
           <% @bounce_overs.each do |bounce_mail| %>
             <tr>
               <td><%= bounce_mail.recipient %></td>
-              <td><%= bounce_mail.senderdomain %></td>
+              <td><%= bounce_mail.addresser %></td>
               <td>
                 <%= link_to admin_path(bounce_mail) do %>
                   <span class="glyphicon glyphicon-search"></span>

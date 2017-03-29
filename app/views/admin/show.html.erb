@@ -19,7 +19,7 @@
         <tr>
           <th class="tight">Timestamp</th>
           <th class="x-tight">Reason</th>
-          <th class="tight">Senderdomain</th>
+          <th class="tight">Addresser</th>
           <th>Subject</th>
           <th>Diagnosticcode</th>
         </tr>
@@ -35,7 +35,7 @@
               <% end %>
             </td>
             <td><%= bounce_mail.reason %></td>
-            <td><%= bounce_mail.senderdomain %></td>
+            <td><%= bounce_mail.addresser %></td>
             <td><%= bounce_mail.subject %></td>
             <td><%= bounce_mail.diagnosticcode %></td>
           </tr>

@@ -29,7 +29,7 @@ class BounceMailsController < ApplicationController
 
         {recipient: recipients, digest: digests}.each {|k, v|
           if v.present?
-            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :reason, :digest, :subject,
+            @bounce_mails += BounceMail.select(:id, 'MAX(timestamp) AS timestamp', :recipient, :senderdomain, :addresser, :reason, :digest, :subject,
                                                'whitelist_mails.id AS whitelisted')
                                        .joins('LEFT JOIN whitelist_mails' +
                                               '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
@@ -38,7 +38,7 @@ class BounceMailsController < ApplicationController
           end
         }
       else
-        @bounce_mails = BounceMail.select(:id, :timestamp, :recipient, :senderdomain, :reason, :digest, :subject,
+        @bounce_mails = BounceMail.select(:id, :timestamp, :recipient, :senderdomain, :addresser, :reason, :digest, :subject,
                                                'whitelist_mails.id AS whitelisted')
                                   .joins('LEFT JOIN whitelist_mails' +
                                          '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
