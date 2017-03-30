@@ -75,7 +75,7 @@ def insert(mysql, data)
   mysql.query(sql)
 end
 
-mysql = Mysql2::Client.new(host: :foo.bar:, username: 'root', database: 'sisito')
+mysql = Mysql2::Client.new(host: 'db-server', username: 'root', database: 'sisito')
 
 process(MAIL_DIR) do |data|
   insert(mysql, data)
