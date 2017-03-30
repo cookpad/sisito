@@ -1,7 +1,7 @@
 Sisito
 ================
 
-It is [sisimai[(http://libsisimai.org/) data frontend.
+It is [sisimai](http://libsisimai.org/) data frontend.
 
 ## Screenshot
 
