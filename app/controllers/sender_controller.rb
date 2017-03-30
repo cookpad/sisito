@@ -5,6 +5,11 @@ class SenderController < ApplicationController
     @confirmation_mail = ConfirmationMail.new
     @confirmation_mail.from = params[:from]
     @confirmation_mail.to = params[:to]
+
+    if @confirmation_mail.to.blank? and params[:digest].present?
+      bounce_mail = BounceMail.where(digest: params[:digest]).take
+      @confirmation_mail.to = bounce_mail.recipient if bounce_mail.present?
+    end
   end
 
   require 'net/smtp'
