@@ -1,7 +1,7 @@
 Sisito
 ================
 
-It is [sisimai](http://libsisimai.org/) data frontend.
+It is [sisimai](http://libsisimai.org/) collected data frontend.
 
 ## Screenshot
 
@@ -84,4 +84,5 @@ end
 
 ## Related Links
 
-- https://github.com/winebarrel/sisito-api
+* http://libsisimai.org
+* https://github.com/winebarrel/sisito-api
