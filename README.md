@@ -93,7 +93,8 @@ FROM
     ON bm.recipient = wm.recipient
    AND bm.senderdomain = wm.senderdomain
 WHERE
-  wm.id IS NULL
+  bm.senderdomain = 'example.com'
+  AND wm.id IS NULL
   /*
   AND bm.softbounce = 1
   AND bm.reason IN ('filtered')
