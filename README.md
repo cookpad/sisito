@@ -82,7 +82,7 @@ process(MAIL_DIR) do |data|
 end
 ```
 
-## List Blacklisted Recipient SQL Example
+## List Blacklisted Recipients SQL Example
 
 ```sql
 SELECT
