@@ -82,6 +82,25 @@ process(MAIL_DIR) do |data|
 end
 ```
 
+## List Blacklisted Recipient SQL Example
+
+```sql
+SELECT
+  recipient
+FROM
+  bounce_mails bm
+  LEFT JOIN whitelist_mails wm
+    ON bm.recipient = wm.recipient
+   AND bm.senderdomain = wm.senderdomain
+WHERE
+  bm.recipient = ?
+  AND wm.id IS NULL
+  /*
+  AND bm.softbounce = 1
+  AND bm.reason IN ('filtered')
+  */
+```
+
 ## Related Links
 
 * http://libsisimai.org
