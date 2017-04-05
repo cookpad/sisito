@@ -35,6 +35,7 @@ class WhitelistMailsController < ApplicationController
 
     @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
                          .order(timestamp: :desc)
+                         .page(params[:page])
   end
 
   def register

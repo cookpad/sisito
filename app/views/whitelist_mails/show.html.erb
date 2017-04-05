@@ -41,6 +41,12 @@
   </div>
 </section>
 
+<section class="disable-margin-top">
+  <div class="col-sm-12 text-center">
+    <%= paginate @history %>
+  </div>
+</section>
+
 <section>
   <div class="col-sm-12">
     <%= link_to whitelist_mails_path do %>
