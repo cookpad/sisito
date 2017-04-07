@@ -21,7 +21,7 @@
           <% @bounce_overs.each do |bounce_mail| %>
             <tr>
               <td><%= bounce_mail.recipient %></td>
-              <td><%= bounce_mail.addresser %></td>
+              <td><%= bounce_mail.addresser_or_alias %></td>
               <td>
                 <%= link_to admin_path(bounce_mail) do %>
                   <span class="glyphicon glyphicon-search"></span>

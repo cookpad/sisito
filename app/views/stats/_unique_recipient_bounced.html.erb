@@ -13,7 +13,7 @@
     <div id="uniq_count_by_reason"></div>
   </div>
   <div class="col-sm-4">
-    <div id="uniq_count_by_senderdomain"></div>
+    <div id="uniq_count_by_sender"></div>
   </div>
 </section>
 
@@ -52,11 +52,11 @@
 
 <%= javascript_tag do %>
   c3.generate({
-    bindto: '#uniq_count_by_senderdomain',
+    bindto: '#uniq_count_by_sender',
     data: {
       columns: <%= raw(
-        @uniq_count_by_senderdomain.to_a.slice(0, 3)
-          .push(['etc', @uniq_count_by_senderdomain.values.slice(3..-1).try(:sum)])
+        @uniq_count_by_sender.to_a.slice(0, 3)
+          .push(['etc', @uniq_count_by_sender.values.slice(3..-1).try(:sum)])
           .select {|_, v| v.present? }
           .inspect
       ) %>,

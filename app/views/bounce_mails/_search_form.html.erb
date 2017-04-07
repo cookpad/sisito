@@ -45,7 +45,7 @@
               <td><%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %></td>
               <td><%= @mask ? bounce_mail.mask_recipient : bounce_mail.recipient %></td>
               <td><%= bounce_mail.subject %></td>
-              <td><%= bounce_mail.addresser %></td>
+              <td><%= bounce_mail.addresser_or_alias %></td>
               <td><%= bounce_mail.reason %></td>
               <td>
                 <%= link_to bounce_mail_path(bounce_mail, digest: @mask ? nil : bounce_mail.digest) do %>

@@ -5,6 +5,14 @@ class BounceMail < ApplicationRecord
     [user, domain].join(?@)
   end
 
+  def addresser_or_alias
+    if self.addresseralias.blank?
+      self.addresser
+    else
+      self.addresseralias
+    end
+  end
+
   def link
     mail_link = Rails.application.config.sisito[:mail_link]
 

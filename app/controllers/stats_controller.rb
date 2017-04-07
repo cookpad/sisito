@@ -38,8 +38,18 @@ class StatsController < ApplicationController
                 .sort_by(&:last).reverse.to_h
     end
 
-    @uniq_count_by_senderdomain = cache_if_production(:uniq_count_by_senderdomain, expires_in: 1.hour) do
-      BounceMail.distinct.group(:senderdomain).count(:recipient)
+    @uniq_count_by_sender = cache_if_production(:uniq_count_by_sender, expires_in: 1.hour) do
+      select_columns = <<-SQL
+        COUNT(DISTINCT recipient) AS count_recipient,
+        CASE
+        WHEN addresseralias IS NULL THEN addresser
+        WHEN addresseralias = ''    THEN addresser
+        ELSE addresseralias
+        END AS addresser_alias
+      SQL
+
+      BounceMail.select(select_columns).group(:addresser_alias)
+                .map {|r| [r.addresser_alias, r.count_recipient] }
                 .sort_by(&:last).reverse.to_h
     end
 

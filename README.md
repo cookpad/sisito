@@ -68,7 +68,10 @@ end
 
 def insert(mysql, data)
   values = data.to_hash.values_at(*COLUMNS)
-  columns = (COLUMNS + ['digest', 'created_at', 'updated_at']).join(?,)
+  addresseralias = data.addresser.alias
+  addresseralias = data.addresser if addresseralias.empty?
+  values << addresseralias
+  columns = (COLUMNS + ['addresseralias', 'digest', 'created_at', 'updated_at']).join(?,)
   timestamp = values.shift
   values = (["FROM_UNIXTIME(#{timestamp})"] + values.map(&:inspect) + ['SHA1(recipient)', 'NOW()', 'NOW()']).join(?,)
   sql = "INSERT INTO bounce_mails (#{columns}) VALUES (#{values})"

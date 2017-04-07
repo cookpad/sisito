@@ -90,7 +90,7 @@ class AdminController < ApplicationController
                              .group(:recipient, :senderdomain)
                              .order(:recipient)
 
-    column_names = %w(recipient addresser reason whitelisted)
+    column_names = %w(recipient addresser addresseralias reason whitelisted)
 
     csv = CSV.generate do |rows|
       rows << column_names
