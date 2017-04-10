@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20170128144003) do
     t.string   "deliverystatus",              null: false
     t.string   "timezoneoffset",              null: false
     t.string   "addresser",                   null: false
-    t.string   "addresseralias"
+    t.string   "addresseralias",              null: false
     t.string   "recipient",                   null: false
     t.string   "digest",         default: "", null: false
     t.datetime "created_at",                  null: false

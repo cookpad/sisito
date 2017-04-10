@@ -42,8 +42,7 @@ class StatsController < ApplicationController
       select_columns = <<-SQL
         COUNT(DISTINCT recipient) AS count_recipient,
         CASE
-        WHEN addresseralias IS NULL THEN addresser
-        WHEN addresseralias = ''    THEN addresser
+        WHEN addresseralias = '' THEN addresser
         ELSE addresseralias
         END AS addresser_alias
       SQL
