@@ -68,12 +68,17 @@ class BounceMailsController < ApplicationController
   private
 
   def set_bounce_mail
-    @bounce_mail = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
-                             .joins('LEFT JOIN whitelist_mails' +
-                                    '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
-                                    ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
-                             .group(:recipient, :senderdomain)
-                             .find(params[:id])
+    relation = BounceMail.select('bounce_mails.*', 'whitelist_mails.id AS whitelisted', 'MAX(whitelist_mails.created_at) AS max_whitelist_mail_created_at')
+                         .joins('LEFT JOIN whitelist_mails' +
+                                '  ON bounce_mails.recipient = whitelist_mails.recipient ' +
+                                ' AND bounce_mails.senderdomain = whitelist_mails.senderdomain')
+                         .group(:recipient, :senderdomain)
+
+    if params[:id] =~ /\A\d+\z/
+      @bounce_mail = relation.find(params[:id])
+    else
+      @bounce_mail = relation.where(digest: params[:id]).take!
+    end
 
     if @bounce_mail.whitelisted
       @whitelist_mail = WhitelistMail.find(@bounce_mail.whitelisted)
