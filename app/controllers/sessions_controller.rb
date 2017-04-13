@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
     if allow_users.blank? or allow_users.include?(auth.info.email)
       session[:auth] = auth.info
-      redirect_to root_path
+      redirect_to return_path
     else
       render plain: '401 Unauthorized', status: :unauthorized
     end
@@ -17,5 +17,15 @@ class SessionsController < ApplicationController
 
   def authenticate?
     false
+  end
+
+  private
+
+  def return_path
+    if request.env['omniauth.origin'].present?
+      CGI.unescape(request.env['omniauth.origin'])
+    else
+      root_path
+    end
   end
 end
