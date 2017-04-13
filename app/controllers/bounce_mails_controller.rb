@@ -56,8 +56,10 @@ class BounceMailsController < ApplicationController
   end
 
   def show
-    if @bounce_mail.digest != params[:digest]
-      authenticate
+    unless Rails.application.config.sisito.fetch(:authz).fetch(:disable_mask)
+      if @bounce_mail.digest != params[:digest]
+        authenticate
+      end
     end
 
     @history = BounceMail.where(recipient: @bounce_mail.recipient, senderdomain: @bounce_mail.senderdomain)
