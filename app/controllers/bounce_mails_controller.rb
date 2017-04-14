@@ -25,6 +25,9 @@ class BounceMailsController < ApplicationController
           end
         end
 
+        # normalize
+        recipients = recipients.map {|r| r.tr(%!'"!, '') }
+
         @bounce_mails = []
 
         {recipient: recipients, digest: digests}.each {|k, v|
