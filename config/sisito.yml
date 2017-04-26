@@ -15,6 +15,7 @@ digest: sha1
 header_links:
   "Example Domain": http://example.com/
   "Bounce Reason": http://libsisimai.org/en/reason/
+#shorten_stats: false
 #bounce_over:
 #  buffer: 0
 #omniauth:

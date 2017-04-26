@@ -3,5 +3,7 @@
 <% end %>
 
 <%= render 'recent_bounced' %>
-<%= render 'unique_recipient_bounced' %>
-<%= render 'bounced_by_type' %>
+<% unless Rails.application.config.sisito[:shorten_stats] %>
+  <%= render 'unique_recipient_bounced' %>
+  <%= render 'bounced_by_type' %>
+<% end %>

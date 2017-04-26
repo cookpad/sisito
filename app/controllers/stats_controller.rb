@@ -27,41 +27,43 @@ class StatsController < ApplicationController
                 .sort_by(&:last).reverse.to_h
     end
 
-    # Unique Recipient Bounced
-    @uniq_count_by_destination = cache_if_production(:uniq_count_by_destination, expires_in: 1.hour) do
-      BounceMail.distinct.group(:destination).count(:recipient)
-                .sort_by(&:last).reverse.to_h
-    end
-
-    @uniq_count_by_reason = cache_if_production(:uniq_count_by_reason, expires_in: 1.hour) do
-      BounceMail.distinct.group(:reason).count(:recipient)
-                .sort_by(&:last).reverse.to_h
-    end
-
-    @uniq_count_by_sender = cache_if_production(:uniq_count_by_sender, expires_in: 1.hour) do
-      select_columns = <<-SQL
-        COUNT(DISTINCT recipient) AS count_recipient,
-        CASE
-        WHEN addresseralias = '' THEN addresser
-        ELSE addresseralias
-        END AS addresser_alias
-      SQL
-
-      BounceMail.select(select_columns).group(:addresser_alias)
-                .map {|r| [r.addresser_alias, r.count_recipient] }
-                .sort_by(&:last).reverse.to_h
-    end
-
-    # Bounced by Type
-    @bounced_by_type = cache_if_production(:bounced_by_type, expires_in: 1.hour) do
-      count_by_reason_destination = {}
-
-      BounceMail.group(:reason, :destination).count.each do |(reason, destination), count|
-        count_by_reason_destination[reason] ||= {}
-        count_by_reason_destination[reason][destination] = count
+    unless Rails.application.config.sisito[:shorten_stats]
+      # Unique Recipient Bounced
+      @uniq_count_by_destination = cache_if_production(:uniq_count_by_destination, expires_in: 1.hour) do
+        BounceMail.distinct.group(:destination).count(:recipient)
+                  .sort_by(&:last).reverse.to_h
       end
 
-      count_by_reason_destination
+      @uniq_count_by_reason = cache_if_production(:uniq_count_by_reason, expires_in: 1.hour) do
+        BounceMail.distinct.group(:reason).count(:recipient)
+                  .sort_by(&:last).reverse.to_h
+      end
+
+      @uniq_count_by_sender = cache_if_production(:uniq_count_by_sender, expires_in: 1.hour) do
+        select_columns = <<-SQL
+          COUNT(DISTINCT recipient) AS count_recipient,
+          CASE
+          WHEN addresseralias = '' THEN addresser
+          ELSE addresseralias
+          END AS addresser_alias
+        SQL
+
+        BounceMail.select(select_columns).group(:addresser_alias)
+                  .map {|r| [r.addresser_alias, r.count_recipient] }
+                  .sort_by(&:last).reverse.to_h
+      end
+
+      # Bounced by Type
+      @bounced_by_type = cache_if_production(:bounced_by_type, expires_in: 1.hour) do
+        count_by_reason_destination = {}
+
+        BounceMail.group(:reason, :destination).count.each do |(reason, destination), count|
+          count_by_reason_destination[reason] ||= {}
+          count_by_reason_destination[reason][destination] = count
+        end
+
+        count_by_reason_destination
+      end
     end
   end
 
