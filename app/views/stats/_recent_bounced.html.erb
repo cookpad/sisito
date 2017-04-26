@@ -28,6 +28,12 @@
   </div>
 </section>
 
+<section>
+  <div class="col-sm-12">
+    <div id="count_by_reason_date"></div>
+  </div>
+</section>
+
 <%= javascript_tag do %>
   c3.generate({
     bindto: '#count_by_date',
@@ -82,6 +88,36 @@
         ) %>,
         type : 'pie'
       }
+    });
+  <% end %>
+<% end %>
+
+<% if @count_by_reason_date.present? %>
+  <% reasons = @count_by_reason_date.keys.uniq.sort %>
+  <% dates = @count_by_reason_date.flat_map {|_, h| h.keys }.uniq.sort %>
+  <%= javascript_tag do %>
+    c3.generate({
+      bindto: '#count_by_reason_date',
+      size: {height: 200},
+      data: {
+        x: 'x',
+        columns: [
+          ['x', <%= raw dates.map {|i| i.strftime('%Y-%m-%d') }.map(&:inspect).join(?,) %>],
+          <%=raw(
+            reasons.map {|reason|
+              [reason, *dates.map {|d| @count_by_reason_date[reason][d] }].inspect
+            }.join(?,)
+          ) %>
+        ]
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
+        }
+    }
     });
   <% end %>
 <% end %>

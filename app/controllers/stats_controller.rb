@@ -27,6 +27,14 @@ class StatsController < ApplicationController
                 .sort_by(&:last).reverse.to_h
     end
 
+    @count_by_reason_date = cache_if_production("count_by_date_reason_#{@recent_days}", expires_in: 5.minutes) do
+      BounceMail.select(:reason, "DATE(timestamp) AS date", "COUNT(reason) AS count_reason")
+                .where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
+                .group(:reason, :date)
+                .sort_by {|i| [i.reason, i.date] }
+                .inject(Hash.new {|h, k| h[k] = Hash.new(0) }) {|r, i| r[i.reason][i.date] = i.count_reason; r }
+    end
+
     unless Rails.application.config.sisito[:shorten_stats]
       # Unique Recipient Bounced
       @uniq_count_by_destination = cache_if_production(:uniq_count_by_destination, expires_in: 1.hour) do
