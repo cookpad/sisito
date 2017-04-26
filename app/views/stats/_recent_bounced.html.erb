@@ -109,15 +109,13 @@
             }.join(?,)
           ) %>
         ]
-    },
-    axis: {
+      },
+      axis: {
         x: {
-            type: 'timeseries',
-            tick: {
-                format: '%Y-%m-%d'
-            }
+          type: 'timeseries',
+          tick: {format: '%-m/%d'}
         }
-    }
+      }
     });
   <% end %>
 <% end %>
