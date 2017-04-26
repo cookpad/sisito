@@ -105,7 +105,7 @@
           ['x', <%= raw dates.map {|i| i.strftime('%Y-%m-%d') }.map(&:inspect).join(?,) %>],
           <%=raw(
             reasons.map {|reason|
-              [reason, *dates.map {|d| @count_by_reason_date[reason][d] }].inspect
+              [reason, *dates.map {|d| @count_by_reason_date.fetch(reason, {}).fetch(d, 0) }].inspect
             }.join(?,)
           ) %>
         ]

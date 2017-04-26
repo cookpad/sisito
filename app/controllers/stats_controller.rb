@@ -32,7 +32,7 @@ class StatsController < ApplicationController
                 .where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
                 .group(:reason, :date)
                 .sort_by {|i| [i.reason, i.date] }
-                .inject(Hash.new {|h, k| h[k] = Hash.new(0) }) {|r, i| r[i.reason][i.date] = i.count_reason; r }
+                .inject({}) {|r, i| r[i.reason] ||= {}; r[i.reason][i.date] = i.count_reason; r }
     end
 
     unless Rails.application.config.sisito[:shorten_stats]
