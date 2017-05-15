@@ -52,6 +52,11 @@ class BounceMailsController < ApplicationController
           @bounce_mails = @bounce_mails.where(reason: @reason)
         end
 
+        if params[:addresser].present?
+          @addresser = params[:addresser]
+          @bounce_mails = @bounce_mails.where(addresser: @addresser)
+        end
+
         @bounce_mails = @bounce_mails.order(timestamp: :desc).page(params[:page])
         @mask = !Rails.application.config.sisito.fetch(:authz).fetch(:disable_mask)
       end
