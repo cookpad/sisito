@@ -16,6 +16,9 @@ digest: sha1
 header_links:
   "Example Domain": http://example.com/
   "Bounce Reason": http://libsisimai.org/en/reason/
+#whitelist_callback:
+#  whitelisted: path_to_script
+#  unwhitelisted: path_to_script
 #shorten_stats: false
 #bounce_over:
 #  buffer: 0

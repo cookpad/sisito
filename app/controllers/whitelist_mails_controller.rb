@@ -23,6 +23,7 @@ class WhitelistMailsController < ApplicationController
     @whitelist_mail = WhitelistMail.new(whitelist_mail_params)
 
     if @whitelist_mail.save
+      whitelisted_callback(@whitelist_mail)
       redirect_to whitelist_mails_path, notice: 'Whitelist mail was successfully created.'
     else
       render :new
@@ -43,6 +44,7 @@ class WhitelistMailsController < ApplicationController
 
     unless WhitelistMail.exists?(recipient: whitelist_mail.recipient, senderdomain: whitelist_mail.senderdomain)
       whitelist_mail.save!
+      whitelisted_callback(whitelist_mail)
     end
 
     if params[:return_to]
@@ -57,6 +59,7 @@ class WhitelistMailsController < ApplicationController
 
     if whitelist_mail
       whitelist_mail.destroy!
+      unwhitelisted_callback(whitelist_mail)
     end
 
     if params[:return_to]
@@ -67,7 +70,10 @@ class WhitelistMailsController < ApplicationController
   end
 
   def destroy
-    @whitelist_mail.destroy
+    if @whitelist_mail.destroy
+      unwhitelisted_callback(@whitelist_mail)
+    end
+
     redirect_to whitelist_mails_path, notice: 'Whitelist mail was successfully destroyed.'
   end
 
@@ -88,6 +94,29 @@ class WhitelistMailsController < ApplicationController
       if username == sisito_config.fetch(:admin).fetch(:username)
         sisito_config.fetch(:admin).fetch(:password)
       end
+    end
+  end
+
+  def whitelisted_callback(whitelist_mail)
+    callback = Rails.application.config.sisito.fetch(:whitelist_callback, {})[:whitelisted]
+    execute_callback0(callback, whitelist_mail) if callback
+  end
+
+  def unwhitelisted_callback(whitelist_mail)
+    callback = Rails.application.config.sisito.fetch(:whitelist_callback, {})[:unwhitelisted]
+    execute_callback0(callback, whitelist_mail) if callback
+  end
+
+  def execute_callback0(callback, whitelist_mail)
+    cmd = [callback, whitelist_mail.recipient].shelljoin
+    Rails.logger.info "Execute #{cmd}"
+
+    out, err, status = Open3.capture3(cmd)
+    Rails.logger.info "  #{cmd}: stdout: #{out}" unless out.empty?
+    Rails.logger.warn "  #{cmd}: stderr: #{err}" unless err.empty?
+
+    unless status.success?
+      Rails.error "  #{cmd}: execution failed: exitstatus=#{status.exitstatus}"
     end
   end
 end
