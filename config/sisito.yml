@@ -1,6 +1,7 @@
 admin:
   username: admin
   password: pass
+  #secret_file: path_to_yaml
 authz:
   disable_mask: false
   show_whitelist: true
