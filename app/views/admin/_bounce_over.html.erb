@@ -30,7 +30,12 @@
               </td>
               <td>
                 <% if bounce_mail.whitelisted %>
-                  <span class="label label-success">Whitelisted</span>
+                  <%= link_to whitelist_mails_deregister_path(
+                        'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain,
+                        return_to: current_page?(admin_search_path) ? admin_search_path : admin_index_path(page: params[:page])),
+                        method: :post, data: { confirm: "Are you sure you want to deregister '#{bounce_mail.recipient}' to whitelist?" } do %>
+                    <span class="label label-success">Whitelisted</span>
+                  <% end %>
                 <% else %>
                   <%= link_to whitelist_mails_register_path(
                         'whitelist_mail[recipient]': bounce_mail.recipient, 'whitelist_mail[senderdomain]': bounce_mail.senderdomain,
