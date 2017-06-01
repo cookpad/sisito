@@ -117,7 +117,7 @@ class WhitelistMailsController < ApplicationController
     Rails.logger.warn "  #{cmd}: stderr: #{err}" unless err.empty?
 
     unless status.success?
-      Rails.error "  #{cmd}: execution failed: exitstatus=#{status.exitstatus}"
+      Rails.logger.error "  #{cmd}: execution failed: exitstatus=#{status.exitstatus}"
     end
   end
 end
