@@ -84,3 +84,4 @@ pickle-email-*.html
 *~
 
 Gemfile.lock
+test.rb

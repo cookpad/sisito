@@ -9,4 +9,18 @@ Rails.application.config.tap do |config|
     config.sisito[:admin][:username] = secret.fetch('username')
     config.sisito[:admin][:password] = secret.fetch('password')
   end
+
+  if config.sisito[:whitelist_callback]
+    [:whitelisted, :unwhitelisted].each do |key|
+      if (script = config.sisito[:whitelist_callback][key])
+        script = Rails.root.join(script) unless script.start_with?('/')
+
+        unless File.exist?(script)
+          raise Errno::ENOENT, "No such file or directory: whitelist_callback/#{key}: #{script}"
+        end
+
+        config.sisito[:whitelist_callback][key] = script
+      end
+    end
+  end
 end

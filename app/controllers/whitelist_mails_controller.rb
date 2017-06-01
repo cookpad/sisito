@@ -108,7 +108,8 @@ class WhitelistMailsController < ApplicationController
   end
 
   def execute_callback0(callback, whitelist_mail)
-    cmd = [callback, whitelist_mail.recipient].shelljoin
+    recipients = [whitelist_mail.recipient, *whitelist_mail.bounce_mails.map(&:alias)].uniq
+    cmd = [callback, *recipients].shelljoin
     Rails.logger.info "Execute #{cmd}"
 
     out, err, status = Open3.capture3(cmd)
