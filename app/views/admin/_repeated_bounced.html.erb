@@ -33,7 +33,12 @@
           <% @repeated_bounce_mails.slice(0, 10).each do |bounce_mail| %>
             <tr>
               <td><%= bounce_mail.count %></td>
-              <td><%= bounce_mail.recipient %></td>
+              <td>
+                <%= bounce_mail.recipient %>
+                <% if blacklisted_label?(bounce_mail) %>
+                  <span class="label label-danger">Blacklisted</span>
+                <% end %>
+              </td>
               <td><%= bounce_mail.addresser_or_alias %></td>
               <td>
                 <%= link_to admin_path(bounce_mail) do %>

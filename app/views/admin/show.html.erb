@@ -10,6 +10,9 @@
       whitelisted_at: <%= @whitelist_mail.created_at.strftime('%-m/%-d %-H:%M') %>
     </span>
   <% end %>
+  <% if blacklisted_label?(@bounce_mail) %>
+    <span class="label label-danger">Blacklisted</span>
+  <% end %>
 </div>
 
 <section>

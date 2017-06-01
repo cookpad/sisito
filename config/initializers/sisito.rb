@@ -23,4 +23,8 @@ Rails.application.config.tap do |config|
       end
     end
   end
+
+  if (filter = config.sisito[:blacklisted_label_filter])
+    config.sisito[:blacklisted_label_filter] = eval(filter)
+  end
 end

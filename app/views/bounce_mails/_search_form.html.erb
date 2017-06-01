@@ -48,7 +48,12 @@
           <% @bounce_mails.each do |bounce_mail| %>
             <tr>
               <td><%= bounce_mail.timestamp.strftime('%-m/%-d %-H:%M') %></td>
-              <td><%= @mask ? bounce_mail.mask_recipient : bounce_mail.recipient %></td>
+              <td>
+                <%= @mask ? bounce_mail.mask_recipient : bounce_mail.recipient %>
+                <% if blacklisted_label?(bounce_mail) %>
+                  <span class="label label-danger">Blacklisted</span>
+                <% end %>
+              </td>
               <td><%= bounce_mail.subject %></td>
               <td><%= bounce_mail.addresser_or_alias %></td>
               <td><%= bounce_mail.reason %></td>

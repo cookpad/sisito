@@ -14,6 +14,14 @@ module ApplicationHelper
     bounce_mail_timestamp > (whitelist_mail_created_at + buf)
   end
 
+  def blacklisted_label?(bounce_mail)
+    if filter = Rails.application.config.sisito[:blacklisted_label_filter]
+      not bounce_mail.whitelisted and filter.call(bounce_mail)
+    else
+      false
+    end
+  end
+
   def current_top_path?(path)
     path.split('/')[1] ==    url_for(request.params).split('/')[1]
   end
