@@ -53,7 +53,7 @@
               <td><%= bounce_mail.addresser_or_alias %></td>
               <td><%= bounce_mail.reason %></td>
               <td>
-                <%= link_to bounce_mail_path(bounce_mail) do %>
+                <%= link_to bounce_mail_path(bounce_mail, @query ? {digest: bounce_mail.digest} : {}) do %>
                   <%= content_tag(:span, nil, class: 'glyphicon ' + (@mask ? 'glyphicon-lock' : 'glyphicon-search')) %>
                   Show
                 <% end %>
