@@ -3,18 +3,23 @@
   Recently Bounced
 </div>
 
-<section>
-  <div class="col-sm-2">
-    <%= form_tag root_path, method: :get do %>
+<%= form_tag root_path, method: :get do %>
+  <section>
+    <div class="col-sm-2">
       <%= select_tag :recent_days,
             options_for_select(
               StatsController::MAX_RECENT_DAYS.times.map(&:succ).reverse.map {|i| ["#{i} Day".send(i > 1 ? :pluralize : :singularize), i] },
               selected: @recent_days),
             class: 'form-control', onchange: 'this.form.submit()' %>
-    <% end %>
-  </div>
-  <div class="col-sm-10"></div>
-</section>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :addresser,
+            options_for_select([''] + BounceMail.group(:addresser).pluck(:addresser).sort, selected: @addresser),
+            class: 'form-control', onchange: 'this.form.submit()' %>
+    </div>
+    <div class="col-sm-8"></div>
+  </section>
+<% end %>
 
 <section>
   <div class="col-sm-6">
