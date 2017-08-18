@@ -12,9 +12,10 @@ It is [sisimai](http://libsisimai.org/) collected data frontend.
 ## Installation
 
 ```sh
+git clone https://github.com/winebarrel/sisito.git
 bundle install
 vi confing/database.yml
-bundle exec db:create db:migrate
+bundle exec rails db:create db:migrate
 bundle exec rails s
 ```
 
