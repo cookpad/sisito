@@ -116,6 +116,28 @@ WHERE
   */
 ```
 
+## Monitoring
+
+```
+$ curl -s localhost:3000/status | jq .
+{
+  "start_time": "2017-08-19T22:36:08.887+09:00",
+  "interval": 60,
+  "count": {
+    "all": 7,
+    "reason": {
+      "hostunknown": 7
+    },
+    "senderdomain": {
+      "43b36f28aa95.cookpad.local": 7
+    },
+    "destination": {
+      "a.b.c": 7
+    }
+  }
+}
+```
+
 ## Related Links
 
 * http://libsisimai.org
