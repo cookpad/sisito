@@ -1,7 +1,9 @@
 version: '2'
 services:
   sisito:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.sisito
     ports:
      - '3000:3000'
     depends_on:
@@ -12,3 +14,13 @@ services:
     image: 'mysql:5.6'
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
+  postfix:
+    build:
+      context: .
+      dockerfile: Dockerfile.postfix
+    depends_on:
+      - sisito
+      - mysql
+    links:
+      - sisito
+      - mysql

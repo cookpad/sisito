@@ -27,7 +27,7 @@ COPY . /var/www/sisito
 
 RUN cp -a /tmp/sisito/.bundle /tmp/sisito/vendor /var/www/sisito/
 
-COPY docker/ /
+COPY docker/sisito/ /
 
 WORKDIR /var/www/sisito
 

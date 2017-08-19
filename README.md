@@ -81,7 +81,7 @@ def insert(mysql, data)
   values = data.to_hash.values_at(*COLUMNS)
   addresseralias = data.addresser.alias
   addresseralias = data.addresser if addresseralias.empty?
-  values << addresseralias
+  values << addresseralias.to_s
   columns = (COLUMNS + ['addresseralias', 'digest', 'created_at', 'updated_at']).join(?,)
   timestamp = values.shift
   values = (["FROM_UNIXTIME(#{timestamp})"] + values.map(&:inspect) + ['SHA1(recipient)', 'NOW()', 'NOW()']).join(?,)
