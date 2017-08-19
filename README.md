@@ -90,6 +90,7 @@ def insert(mysql, data)
   mysql.query(sql)
 end
 
+# sql:
 #   INSERT INTO bounce_mails (
 #     timestamp,
 #     lhost,
