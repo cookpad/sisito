@@ -138,6 +138,19 @@ $ curl -s localhost:3000/status | jq .
 }
 ```
 
+## Using local timezone
+
+* config/application.rb
+
+```ruby
+module Sisito
+  class Application < Rails::Application
+    ...
+    config.active_record.default_timezone = :local
+    config.time_zone = "Tokyo"
+    ...
+```
+
 ## Related Links
 
 * http://libsisimai.org

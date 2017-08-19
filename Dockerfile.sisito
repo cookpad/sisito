@@ -25,6 +25,9 @@ RUN cd /tmp/sisito && bundle install -j4 --deployment
 RUN mkdir -p /var/www/sisito/tmp/pids
 COPY . /var/www/sisito
 
+RUN sed -i '/class Application/a config.time_zone = "Tokyo"' /var/www/sisito/config/application.rb
+RUN sed -i '/class Application/a config.active_record.default_timezone = :local' /var/www/sisito/config/application.rb
+
 RUN cp -a /tmp/sisito/.bundle /tmp/sisito/vendor /var/www/sisito/
 
 COPY docker/sisito/ /
