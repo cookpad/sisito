@@ -27,13 +27,14 @@ git clone https://github.com/winebarrel/sisito.git
 cd sisito
 docker-compose build
 docker-compose up
+# console: http://localhost:3000
+# api: `curl localhost:8080/blacklist` (see https://github.com/winebarrel/sisito-api#api)
 ```
 
 ## Recommended System Requirements
 
 * Ruby 2.3
 * MySQL 5.6/5.7
-
 
 ## Bounced Mail Collect Script Example
 

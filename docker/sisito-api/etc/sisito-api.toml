@@ -1,0 +1,6 @@
+[database]
+host = "mysql"
+port = 3306
+database = "sisito_development"
+username = "root"
+password = ""
