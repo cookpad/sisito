@@ -80,7 +80,7 @@ end
 def insert(mysql, data)
   values = data.to_hash.values_at(*COLUMNS)
   addresseralias = data.addresser.alias
-  addresseralias = data.addresser if addresseralias.empty?
+  addresseralias = data.addresser.to_s if addresseralias.empty?
   values << addresseralias
   columns = (COLUMNS + ['addresseralias', 'digest', 'created_at', 'updated_at']).join(?,)
   timestamp = values.shift
