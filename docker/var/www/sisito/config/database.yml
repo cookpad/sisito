@@ -1,0 +1,22 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: sisito_development
+  pool: 5
+  username: root
+  host: mysql
+  variables:
+    sql_mode: TRADITIONAL # required
+
+development:
+  <<: *default
+  database: sisito_development
+
+test:
+  <<: *default
+  database: sisito_test
+
+production:
+  <<: *default
+  database: sisito_production

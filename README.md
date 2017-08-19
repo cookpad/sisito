@@ -20,6 +20,15 @@ bundle exec rails db:create db:migrate
 bundle exec rails s
 ```
 
+### Using docker
+
+```
+git clone https://github.com/winebarrel/sisito.git
+cd sisito
+docker-compose build
+docker-compose up
+```
+
 ## Recommended System Requirements
 
 * Ruby 2.3
