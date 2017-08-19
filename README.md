@@ -22,7 +22,7 @@ bundle exec rails s
 
 ### Using docker
 
-```
+```sh
 git clone https://github.com/winebarrel/sisito.git
 cd sisito
 docker-compose build
@@ -172,7 +172,7 @@ WHERE
 
 ## Monitoring
 
-```
+```json
 $ curl -s localhost:3000/status | jq .
 {
   "start_time": "2017-08-19T22:36:08.887+09:00",
