@@ -90,6 +90,59 @@ def insert(mysql, data)
   mysql.query(sql)
 end
 
+# sql:
+#   INSERT INTO bounce_mails (
+#     timestamp,
+#     lhost,
+#     rhost,
+#     alias,
+#     listid,
+#     reason,
+#     action,
+#     subject,
+#     messageid,
+#     smtpagent,
+#     softbounce,
+#     smtpcommand,
+#     destination,
+#     senderdomain,
+#     feedbacktype,
+#     diagnosticcode,
+#     deliverystatus,
+#     timezoneoffset,
+#     addresser,
+#     recipient,
+#     addresseralias,
+#     digest,
+#     created_at,
+#     updated_at
+#   ) VALUES (
+#     /* timestamp    */  FROM_UNIXTIME(1503152383),
+#     /* lhost        */  "43b36f28aa95",
+#     /* rhost        */  "",
+#     /* alias        */  "user-1503152383@a.b.c",
+#     /* listid       */  "",
+#     /* reason       */  "hostunknown",
+#     /* action       */  "failed",
+#     /* subject      */  "subject-1503152383",
+#     /* messageid    */  "20170819141943.A58CC35A@43b36f28aa95",
+#     /* smtpagent    */  "MTA::Postfix",
+#     /* softbounce   */  0,
+#     /* smtpcommand  */  "",
+#     /* destination  */  "a.b.c",
+#     /* senderdomain */  "43b36f28aa95",
+#     /* feedbacktype */  "",
+#     /* diagnosticco */  "Host or domain name not found. Name service error for name=a.b.c type=AAAA: Host not found",
+#     /* deliverystat */  "5.4.4",
+#     /* timezoneoffs */  "+0900",
+#     /* addresser    */  "root@43b36f28aa95",
+#     /* recipient    */  "user-1503152383@a.b.c",
+#     /* addresserali */  "root@43b36f28aa95",
+#     /* digest       */  SHA1(recipient),
+#     /* created_at   */  NOW(),
+#     /* updated_at   */  NOW()
+#   )
+
 mysql = Mysql2::Client.new(host: 'db-server', username: 'root', database: 'sisito')
 
 process(MAIL_DIR) do |data|
