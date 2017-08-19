@@ -28,6 +28,7 @@ cd sisito
 docker-compose build
 docker-compose up
 # console: http://localhost:3000
+# mailcatcher: http://localhost:11080
 # api: `curl localhost:8080/blacklist` (see https://github.com/winebarrel/sisito-api#api)
 ```
 
