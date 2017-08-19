@@ -126,14 +126,4 @@ class AdminController < ApplicationController
       @whitelist_mail = WhitelistMail.find(@bounce_mail.whitelisted)
     end
   end
-
-  def cache_if_production(key, options = {}, &block)
-    if Rails.env.production?
-      Rails.cache.fetch(key, options) do
-        yield
-      end
-    else
-      yield
-    end
-  end
 end

@@ -34,3 +34,5 @@ header_links:
 #  allow_users:
 #    - foo@example.com
 #    - bar@example.com
+#status:
+#  interval: 60

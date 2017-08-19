@@ -19,4 +19,6 @@ Rails.application.routes.draw do
   get  'auth/:provider/callback', to: 'sessions#callback'
   post 'auth/:provider/callback' , to: 'sessions#callback'
   get  'auth/failure', to: 'sessions#failure'
+
+  get 'status', to: 'status#index'
 end

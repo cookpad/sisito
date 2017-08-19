@@ -21,4 +21,14 @@ class ApplicationController < ActionController::Base
   def set_pervious_url
     session[:pervious_url] = request.original_url
   end
+
+  def cache_if_production(key, options = {}, &block)
+    if Rails.env.production?
+      Rails.cache.fetch(key, options) do
+        yield
+      end
+    else
+      yield
+    end
+  end
 end

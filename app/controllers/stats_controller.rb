@@ -103,16 +103,4 @@ class StatsController < ApplicationController
       end
     end
   end
-
-  private
-
-  def cache_if_production(key, options = {}, &block)
-    if Rails.env.production?
-      Rails.cache.fetch(key, options) do
-        yield
-      end
-    else
-      yield
-    end
-  end
 end
