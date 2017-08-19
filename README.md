@@ -138,9 +138,9 @@ $ curl -s localhost:3000/status | jq .
 }
 ```
 
-## Using local timezone
+## Using Local Timezone
 
-* config/application.rb
+Please fix [config/application.rb](https://github.com/winebarrel/sisito/blob/master/config/application.rb) as follows:
 
 ```ruby
 module Sisito
@@ -150,6 +150,10 @@ module Sisito
     config.time_zone = "Tokyo"
     ...
 ```
+
+## Customize Sisito
+
+see [config/sisito.yml](https://github.com/winebarrel/sisito/blob/master/config/sisito.yml)
 
 ## Related Links
 
