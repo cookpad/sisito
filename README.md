@@ -183,10 +183,10 @@ $ curl -s localhost:3000/status | jq .
       "hostunknown": 7
     },
     "senderdomain": {
-      "43b36f28aa95.cookpad.local": 7
+      "examole.com": 7
     },
     "destination": {
-      "a.b.c": 7
+      "any.not_exist_domain.com": 7
     }
   }
 }
