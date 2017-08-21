@@ -183,7 +183,7 @@ $ curl -s localhost:3000/status | jq .
       "hostunknown": 7
     },
     "senderdomain": {
-      "examole.com": 7
+      "example.com": 7
     },
     "destination": {
       "any.not_exist_domain.com": 7
