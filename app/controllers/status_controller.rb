@@ -3,7 +3,7 @@ class StatusController < ApplicationController
     interval = (Rails.application.config.sisito.dig(:status, :interval) || 60).to_i
     start_time = Time.now - interval
 
-    status = cache_if_production(:status, expires_in: interval) do
+    status = cache_if_production(:status, expires_in: interval - 5) do
       bounce_mails = BounceMail.where('timestamp >= ?', start_time - interval).to_a
 
       {
