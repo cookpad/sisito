@@ -17,7 +17,7 @@ cd sisito
 bundle install
 vi confing/database.yml
 bundle exec rails db:create db:migrate
-bundle exec rails s
+bundle exec rails server
 ```
 
 ### Using docker
