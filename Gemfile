@@ -34,6 +34,7 @@ gem 'c3-rails'
 gem 'kaminari'
 gem 'clipboard-rails'
 gem 'rack-health'
+gem 'sisimai', '>= 4.22.1'
 
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
