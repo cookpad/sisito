@@ -42,9 +42,15 @@ class StatsController < ApplicationController
 
       relation = relation.where(addresser: @addresser) if @addresser.present?
 
-      relation.group(:reason, :date)
-              .sort_by {|i| [i.reason, i.date] }
-              .inject({}) {|r, i| r[i.reason] ||= {}; r[i.reason][i.date] = i.count_reason; r }
+      crd = relation.group(:reason, :date)
+                    .sort_by {|i| [i.reason, i.date] }
+                    .inject({}) {|r, i| r[i.reason] ||= {}; r[i.reason][i.date] = i.count_reason; r }
+
+      crd.keys.each do |reason|
+        (@recent_days_from..@recent_days_to).each {|d| crd[reason][d] ||= 0 }
+      end
+
+      crd
     end
 
     unless Rails.application.config.sisito[:shorten_stats]
