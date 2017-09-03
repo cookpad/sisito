@@ -11,6 +11,7 @@ smtp:
     address: localhost
     port: 25
     enable_starttls_auto: false
+default_recent_days: 14
 digest: sha1
 #mail_link: "https://localhost:9200/_plugin/kibana/#/discover?_a=(index:'maillog-*',query:(query_string:(query:'digest:%{digest}')))"
 header_links:

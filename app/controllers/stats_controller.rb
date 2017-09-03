@@ -1,9 +1,8 @@
 class StatsController < ApplicationController
-  DEFAULT_RECENT_DAYS = 14
-
   def index
     @recent_days_to = params[:to].present? ? params[:to].to_date : Date.today
-    @recent_days_from = params[:from].present? ? params[:from].to_date : @recent_days_to - DEFAULT_RECENT_DAYS.days
+    default_recent_days = Rails.application.config.sisito.fetch(:default_recent_days, 14)
+    @recent_days_from = params[:from].present? ? params[:from].to_date : @recent_days_to - default_recent_days
     @addresser = params[:addresser]
 
     # Recently Bounced
