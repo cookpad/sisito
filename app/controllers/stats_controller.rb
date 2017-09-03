@@ -1,13 +1,14 @@
 class StatsController < ApplicationController
-  MAX_RECENT_DAYS = 14
+  DEFAULT_RECENT_DAYS = 14
 
   def index
-    @recent_days = (params[:recent_days] || MAX_RECENT_DAYS).to_i
+    @recent_days_to = params[:to].present? ? params[:to].to_date : Date.today
+    @recent_days_from = params[:from].present? ? params[:from].to_date : @recent_days_to - DEFAULT_RECENT_DAYS.days
     @addresser = params[:addresser]
 
     # Recently Bounced
-    @count_by_date = cache_if_production("count_by_date_#{@recent_days}_#{@addresser}", expires_in: 5.minutes) do
-      relation = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
+    @count_by_date = cache_if_production("count_by_date_#{@recent_days_from}_#{@recent_days_to}_#{@addresser}", expires_in: 5.minutes) do
+      relation = BounceMail.where('timestamp >= ? AND timestamp < ?', @recent_days_from, @recent_days_to + 1.day)
 
       relation = relation.where(addresser: @addresser) if @addresser.present?
 
@@ -15,12 +16,11 @@ class StatsController < ApplicationController
                     .pluck('DATE(timestamp) AS date', 'COUNT(1) AS count')
                     .sort_by(&:first).to_h
 
-      today = Date.today
-      ((today - (@recent_days - 1).days)..today).map {|d| [d, cbd.fetch(d, 0)] }.to_h
+      (@recent_days_from..@recent_days_to).map {|d| [d, cbd.fetch(d, 0)] }.to_h
     end
 
-    @count_by_destination = cache_if_production("count_by_destination_#{@recent_days}_#{@addresser}", expires_in: 5.minutes) do
-      relation = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
+    @count_by_destination = cache_if_production("count_by_destination_#{@recent_days_from}_#{@recent_days_to}_#{@addresser}", expires_in: 5.minutes) do
+      relation = BounceMail.where('timestamp >= ? AND timestamp < ?', @recent_days_from, @recent_days_to + 1.day)
 
       relation = relation.where(addresser: @addresser) if @addresser.present?
 
@@ -28,8 +28,8 @@ class StatsController < ApplicationController
               .sort_by(&:last).reverse.to_h
     end
 
-    @count_by_reason = cache_if_production("count_by_reason_#{@recent_days}_#{@addresser}", expires_in: 5.minutes) do
-      relation = BounceMail.where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
+    @count_by_reason = cache_if_production("count_by_reason_#{@recent_days_from}_#{@recent_days_to}_#{@addresser}", expires_in: 5.minutes) do
+      relation = BounceMail.where('timestamp >= ? AND timestamp < ?', @recent_days_from, @recent_days_to + 1.day)
 
       relation = relation.where(addresser: @addresser) if @addresser.present?
 
@@ -37,9 +37,9 @@ class StatsController < ApplicationController
               .sort_by(&:last).reverse.to_h
     end
 
-    @count_by_reason_date = cache_if_production("count_by_date_reason_#{@recent_days}_#{@addresser}", expires_in: 5.minutes) do
+    @count_by_reason_date = cache_if_production("count_by_date_reason_#{@recent_days_from}_#{@recent_days_to}_#{@addresser}", expires_in: 5.minutes) do
       relation = BounceMail.select(:reason, "DATE(timestamp) AS date", "COUNT(reason) AS count_reason")
-                           .where('timestamp >= NOW() - INTERVAL ? DAY', @recent_days)
+                           .where('timestamp >= ? AND timestamp < ?', @recent_days_from, @recent_days_to + 1.day)
 
       relation = relation.where(addresser: @addresser) if @addresser.present?
 

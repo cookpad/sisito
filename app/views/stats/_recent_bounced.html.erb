@@ -6,18 +6,20 @@
 <%= form_tag root_path, method: :get do %>
   <section>
     <div class="col-sm-2">
-      <%= select_tag :recent_days,
-            options_for_select(
-              StatsController::MAX_RECENT_DAYS.times.map(&:succ).reverse.map {|i| ["#{i} Day".send(i > 1 ? :pluralize : :singularize), i] },
-              selected: @recent_days),
-            class: 'form-control', onchange: 'this.form.submit()' %>
+      <%= text_field_tag :from, @recent_days_from, data: { :date_format => 'YYYY-MM-DD' }, :class => 'form-control datetimepicker', placeholder: 'YYYY-MM-DD' %>
+    </div>
+    <div class="col-sm-2">
+      <%= text_field_tag :to, @recent_days_to, data: { :date_format => 'YYYY-MM-DD' }, :class => 'form-control datetimepicker', placeholder: 'YYYY-MM-DD' %>
     </div>
     <div class="col-sm-2">
       <%= select_tag :addresser,
             options_for_select([''] + BounceMail.group(:addresser).pluck(:addresser).sort, selected: @addresser),
-            class: 'form-control', onchange: 'this.form.submit()' %>
+            class: 'form-control' %>
     </div>
-    <div class="col-sm-8"></div>
+    <div class="col-sm-1">
+      <%= submit_tag 'Go', class: 'btn btn-primary' %>
+    </div>
+    <div class="col-sm-5"></div>
   </section>
 <% end %>
 

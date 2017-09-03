@@ -16,3 +16,5 @@
 //= require c3
 //= require clipboard
 //= require_tree .
+//= require moment
+//= require bootstrap-datetimepicker
