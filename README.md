@@ -15,7 +15,7 @@ It is [sisimai](http://libsisimai.org/) collected data frontend.
 git clone https://github.com/winebarrel/sisito.git
 cd sisito
 bundle install
-vi confing/database.yml
+vi config/database.yml
 bundle exec rails db:create db:migrate
 bundle exec rails server
 ```
