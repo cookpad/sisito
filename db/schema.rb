@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170128144003) do
+ActiveRecord::Schema.define(version: 20180609030108) do
 
   create_table "bounce_mails", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "timestamp", null: false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20170128144003) do
   create_table "whitelist_mails", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "recipient", default: "", null: false
     t.string "senderdomain", default: "", null: false
+    t.string "digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "idx_created_at"
