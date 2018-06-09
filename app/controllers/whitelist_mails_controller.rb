@@ -6,13 +6,52 @@ class WhitelistMailsController < ApplicationController
   end
 
   def index
-    @whitelist_mails = WhitelistMail.select('whitelist_mails.*', 'MAX(bounce_mails.timestamp) AS max_bounce_mail_timestamp')
-                                .joins('LEFT JOIN bounce_mails' +
-                                       '  ON whitelist_mails.recipient = bounce_mails.recipient ' +
-                                       ' AND whitelist_mails.senderdomain = bounce_mails.senderdomain')
-                                .group(:recipient, :senderdomain)
-                                .order(created_at: :desc)
-                                .page(params[:page])
+    @whitelist_mails_query = params[:whitelist_mails_query] || cookies[:whitelist_mails_query]
+
+    if (params[:commit] == 'Search' and @whitelist_mails_query.blank?) or params[:commit] == 'Clear'
+      cookies.delete(:whitelist_mails_query)
+      redirect_to whitelist_mails_path
+    end
+
+    relation = WhitelistMail.all
+
+    if @whitelist_mails_query.present?
+      cookies[:whitelist_mails_query] = @whitelist_mails_query
+
+      recipients = []
+      digests = []
+
+      @whitelist_mails_query.split(/\s+/).each do |phrase|
+        if phrase =~ /@/
+          recipients << phrase
+        else
+          digests << phrase
+        end
+      end
+
+      # normalize
+      recipients = recipients.map {|r| r.tr(%!'"!, '') }
+
+      if recipients.present?
+        relation = relation.where(recipient: recipients)
+      end
+
+      if digests.present?
+        if recipients.present?
+          relation = relation.or(WhitelistMail.where(digest: digests))
+        else
+          relation = relation.where(digest: digests)
+        end
+      end
+    end
+
+    @whitelist_mails = relation.select('whitelist_mails.*', 'MAX(bounce_mails.timestamp) AS max_bounce_mail_timestamp')
+                               .joins('LEFT JOIN bounce_mails' +
+                                      '  ON whitelist_mails.recipient = bounce_mails.recipient ' +
+                                      ' AND whitelist_mails.senderdomain = bounce_mails.senderdomain')
+                               .group(:recipient, :senderdomain)
+                               .order(created_at: :desc)
+                               .page(params[:page])
   end
 
   def new
@@ -21,6 +60,8 @@ class WhitelistMailsController < ApplicationController
 
   def create
     @whitelist_mail = WhitelistMail.new(whitelist_mail_params)
+    algorithm = Rails.application.config.sisito.fetch(:digest)
+    @whitelist_mail.digest = algorithm.hexdigest(@whitelist_mail.recipient)
 
     if @whitelist_mail.save
       whitelisted_callback(@whitelist_mail)
@@ -43,6 +84,8 @@ class WhitelistMailsController < ApplicationController
     whitelist_mail = WhitelistMail.new(whitelist_mail_params)
 
     unless WhitelistMail.exists?(recipient: whitelist_mail.recipient, senderdomain: whitelist_mail.senderdomain)
+      algorithm = Rails.application.config.sisito.fetch(:digest)
+      whitelist_mail.digest = algorithm.hexdigest(whitelist_mail.recipient)
       whitelist_mail.save!
       whitelisted_callback(whitelist_mail)
     end

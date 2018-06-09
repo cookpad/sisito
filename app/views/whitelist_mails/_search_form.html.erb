@@ -1,0 +1,70 @@
+<section class="disable-margin-top">
+  <div class="col-sm-12">
+    <%= form_tag whitelist_mails_path, method: :get do %>
+      <div class="form-group">
+        <%= text_area_tag :whitelist_mails_query, @whitelist_mails_query || '', class: 'form-control', rows: 3,placeholder: 'email (e.g. foo@example.com)  or  hash (e.g. 767e74eab7081c41e0b83630511139d130249666)' %>
+      </div>
+      <%= submit_tag 'Search', class: 'btn btn-primary' %>
+      <%= submit_tag 'Clear', onclick: "$('#whitelist_mails_query').text('');", class: 'btn btn-default' %>
+    <% end %>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
+    <%= button_to 'New Whitelist Mail', new_whitelist_mail_path, method: 'get', class: 'btn btn-primary' %>
+  </div>
+</section>
+
+<section>
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Recipient</th>
+          <th class="tight">Senderdomain</th>
+          <th class="x-tight">CreatedAt</th>
+          <th class="tight">LatestBounced</th>
+          <th class="x-tight"></th>
+          <th class="x-tight"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @whitelist_mails.each do |whitelist_mail| %>
+          <tr>
+            <td><%= whitelist_mail.recipient %></td>
+            <td><%= whitelist_mail.senderdomain %></td>
+            <td><%= whitelist_mail.created_at.strftime('%-m/%-d %-H:%M') %></td>
+            <td>
+              <% if whitelist_mail.max_bounce_mail_timestamp.present? %>
+                <%= whitelist_mail.max_bounce_mail_timestamp.strftime('%-m/%-d %-H:%M') %>
+                <% if bounce_over?(whitelist_mail.created_at, whitelist_mail.max_bounce_mail_timestamp) %>
+                  <span class="label label-warning">Bounce over</span>
+                <% end %>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to whitelist_mail_path(whitelist_mail) do %>
+                <span class="glyphicon glyphicon-search"></span>
+                Show
+              <% end %>
+            </td>
+            <td>
+              <%= link_to whitelist_mail, method: :delete, data: { confirm: "Are you sure to delete '#{whitelist_mail.recipient} from white list?" } do %>
+                <span class="glyphicon glyphicon-remove"></span>
+                Destroy
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="disable-margin-top">
+  <div class="col-sm-12 text-center">
+    <%= paginate @whitelist_mails %>
+  </div>
+</section>
