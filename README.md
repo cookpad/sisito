@@ -3,6 +3,10 @@ Sisito
 
 It is [sisimai](http://libsisimai.org/) collected data frontend.
 
+## Maintenance notice
+
+This project is no longer maintained.
+
 ## Screenshot
 
 ![](https://cdn.pbrd.co/images/PBJu7ECzS.png) &nbsp; ![](https://cdn.pbrd.co/images/PBJO0Ki4E.png)
